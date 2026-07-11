@@ -15,3 +15,4 @@ A well-configured Phenocryst system, in pairs, should make server owners able to
 
 On the other hand, players are also able to install and launch the game, and join the server in one click with a preconfigured Phanerite launcher.
 
+Please note that this project is still in development stage, bugs are expected.
