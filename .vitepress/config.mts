@@ -62,6 +62,25 @@ export default defineConfig({
                                     text: "配置",
                                     link: "/zh/aphanite/configuration",
                                 },
+                                {
+                                    text: "开发者文档",
+                                    link: "/zh/aphanite/development/",
+                                },
+                            ],
+                        },
+                    ],
+                    "/zh/aphanite/development/": [
+                        {
+                            text: "Aphanite 开发者文档",
+                            items: [
+                                {
+                                    text: "首页",
+                                    link: "/zh/aphanite/development/",
+                                },
+                                {
+                                    text: "General API",
+                                    link: "/zh/aphanite/development/Aphanite General",
+                                },
                             ],
                         },
                     ],

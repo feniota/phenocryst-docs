@@ -10,4 +10,3 @@ outline: "deep"
 
 [Aphanite](https://github.com/feniota/aphanite) is the central server of a Phenocryst system.
 
-## Responsibilities
