@@ -1,4 +1,4 @@
-# Yggdrasil
+# Yggdrasil API
 
 Aphanite 在 `<aphanite_base_url>/api/yggdrasil` 下实现了 Yggdrasil 服务。通过使用 authlib-injector，Aphanite 可以代替 Mojang 服务器执行玩家信息验证和皮肤下发等功能。
 

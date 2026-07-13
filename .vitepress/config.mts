@@ -41,7 +41,7 @@ export default defineConfig({
                             items: [
                                 { text: "介绍", link: "/zh/" },
                                 { text: "安装", link: "/zh/installation" },
-                                { text: "下一步", link: "/zh/next-step" },
+                                { text: "下一步", link: "/zh/next-steps" },
                             ],
                         },
                     ],
@@ -56,11 +56,15 @@ export default defineConfig({
                                 },
                                 {
                                     text: "运行",
-                                    link: "/zh/aphanite/deployment",
+                                    link: "/zh/aphanite/running",
                                 },
                                 {
                                     text: "配置",
                                     link: "/zh/aphanite/configuration",
+                                },
+                                {
+                                    text: "部署",
+                                    link: "/zh/aphanite/deployment",
                                 },
                                 {
                                     text: "开发者文档",
@@ -80,6 +84,9 @@ export default defineConfig({
                                 {
                                     text: "General API",
                                     link: "/zh/aphanite/development/Aphanite General",
+                                },{
+                                    text: "Yggdrasil API",
+                                    link: "/zh/aphanite/development/Yggdrasil",
                                 },
                             ],
                         },
@@ -106,15 +113,53 @@ export default defineConfig({
                     text: "Phenocryst",
                     items: [
                         { text: "Introduction", link: "/" },
-                        { text: "installation", link: "/installation" },
-                        { text: "Next Step", link: "/next-step" },
+                        { text: "Installation", link: "/installation" },
+                        { text: "Next Steps", link: "/next-steps" },
                     ],
                 },
             ],
             "/aphanite/": [
                 {
                     text: "Aphanite",
-                    items: [{ text: "Introduction", link: "/aphanite/" }],
+                    items: [
+                        { text: "Introduction", link: "/aphanite/" },
+                        {
+                            text: "Installation",
+                            link: "/aphanite/installation",
+                        },
+                        {
+                            text: "Running",
+                            link: "/aphanite/running",
+                        },
+                        {
+                            text: "Configuration",
+                            link: "/aphanite/configuration",
+                        },
+                        {
+                            text: "Deployment",
+                            link: "/aphanite/deployment",
+                        },
+                        {
+                            text: "Developer Docs",
+                            link: "/aphanite/development/",
+                        },
+                    ],
+                },
+            ],
+            "/aphanite/development/": [
+                {
+                    text: "Aphanite Developer Docs",
+                    items: [
+                        { text: "Home", link: "/aphanite/development/" },
+                        {
+                            text: "General API",
+                            link: "/aphanite/development/Aphanite General",
+                        },
+                        {
+                            text: "Yggdrasil API",
+                            link: "/aphanite/development/Yggdrasil",
+                        },
+                    ],
                 },
             ],
         },
