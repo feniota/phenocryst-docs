@@ -210,7 +210,7 @@ type Payload = {
 }
 ```
 
-- 如果用户没有[已激活](#activate-totp)的 [TOTP 私钥](#new-totp-privkey)，则返回 `400 Bad Request`。
+- 如果用户没有 [TOTP 私钥](#new-totp-privkey)，则返回 `400 Bad Request`。
 
 ### 完成 OTP 验证 {#validate-otp}
 
@@ -322,6 +322,8 @@ type Request = {
 
 ### 颁发或旋转用户的 TOTP 私钥 <Badge type="tip" text="需要鉴权" /> {#new-totp-privkey} 
 
+新颁发或刚刚旋转的 TOTP 密钥应该被用户妥善保存，创建后应该完成一次验证确保可用。
+
 注意，考虑到用户的实际情况，我们不期望由用户自己管理 TOTP——这是 Phanerite 需要做的事情。
 
 ```http
@@ -339,29 +341,9 @@ type Payload = {
 }
 ```
 
-此时的 TOTP 是临时的，用户必须完成一次 TOTP 挑战来确保 TOTP 添加成功，见下文（[激活 TOTP](#activate-totp)）。
-
 请求成功后，原有的 TOTP 密钥立即失效，Phanerite 需要将新密钥存储下来。
 
 注意，该端点不提供指定用户 ID 的版本，只在当前已登录的用户上生效。
-
-### 激活 TOTP <Badge type="tip" text="需要鉴权" /> {#activate-totp}
-
-新颁发或刚刚旋转的 TOTP 密钥被视为未激活，无法进行鉴权。客户端需要进行以下操作一次，才可激活新的 TOTP 密钥。
-
-```http
-PATCH /users/me/credentials/totp
-```
-
-请求体：
-
-```typescript
-type Request = {
-    otp_token: string;
-}
-```
-
-若激活成功，则返回 `204 No Content`。
 
 ### 关闭 TOTP <Badge type="tip" text="需要鉴权" />
 
