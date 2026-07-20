@@ -455,8 +455,8 @@ type Request={
   register_token?:string;
   turnstile_token?:string;
   email:string;
-  name?:string; // 如果没有指定，则设置为邮箱。
-  password:string;
+  name?:string; // 如果没有指定，则设置为邮箱。应不超过 20 字符。
+  password:string; // 应介于 8 字符和 128 字符之间。
 }
 ```
 
@@ -477,6 +477,7 @@ type Payload=User;
   - 若没有提供注册 Token（忽略 Turnstile Token），返回 `400 Bad Request`。
   - 若提供了注册 Token，但验证失败，返回 `403 Forbidden`。
 - 若邮箱与已有用户冲突，返回 `409 Conflict`。
+- 若昵称和密码未通过长度检查，返回 `418 I'm a Teapot`。
 
 
 ## Profile 系统

@@ -9,7 +9,7 @@ Aphanite 主题图片（可以在 Aphanite 的登录页看见）截自 Minecraft
 - [Photon Shaders](https://modrinth.com/shader/photon-shader)，带来了漂亮的光照效果和氛围感。
   - [钠](https://modrinth.com/mod/sodium)与 [Iris Shaders](https://modrinth.com/mod/iris) 使得自定义着色器成为可能。
 - [Ashen 16x](https://modrinth.com/resourcepack/ashen)，带来了出色的中世纪风格纹理。
-- [Voxy](https://modrinth.com/mod/voxy)（以及 [来自 m3t4f1v3 的 NeoForge 版](https://github.com/m3t4f1v3/voxy)）LoD 模组，实现了图中极远的视距。
+- [Voxy](https://modrinth.com/mod/voxy)（以及 [来自 m3t4f1v3 的 1.21.1 版](https://github.com/m3t4f1v3/voxy)）LoD 模组，实现了图中极远的视距。
 - [Hyper Realistic Sky](https://modrinth.com/resourcepack/hyper-realistic-sky)，带来了 hyper realistic 的天空。
 
 ## 建筑结构

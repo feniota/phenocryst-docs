@@ -456,6 +456,7 @@ type Payload={
 
 Both private and public instances use the same `/register` endpoint. However, depending on the registration type and whether Turnstile is enabled, `turnstile_token` and `register_token` are optional.
 
+
 ```http
 POST /register
 ```
@@ -467,8 +468,8 @@ type Request={
   register_token?:string;
   turnstile_token?:string;
   email:string;
-  name?:string; // Defaults to email if not specified
-  password:string;
+  name?:string; // Defaults to email if not specified. Should not exceed 20 characters.
+  password:string; // Should be more than 8 characters and less than 128 characters.
 }
 ```
 
@@ -489,7 +490,7 @@ type Payload=User;
   - If no registration token is provided (Turnstile token ignored) → `400 Bad Request`.
   - If a registration token is provided but fails validation → `403 Forbidden`.
 - If the email conflicts with an existing user → `409 Conflict`.
-
+- If the name and password failed the length checks → `418 I'm a Teapot`.
 
 ## Profiles
 
