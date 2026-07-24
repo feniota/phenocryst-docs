@@ -79,8 +79,7 @@ Aphanite is written in Rust and it has a frontend (web) part, so you'll need:
 
 - C/C++ build toolchain (depends on your OS — e.g., on macOS you'll need to [install Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/))
 - [Rust toolchain](https://rustup.rs)
-- [Node.js](https://nodejs.org)
-- [pnpm](https://pnpm.io/)
+- [Deno](https://deno.com)
 
 Once installed, clone Aphanite (or download "Source code (zip)" from Releases and extract it):
 
@@ -92,13 +91,8 @@ Then open a terminal and run:
 
 ```bash
 cd aphanite
-
-cd web          # enter frontend directory
-pnpm i          # install frontend build dependencies
-pnpm build      # build frontend assets
-
-cd ..
-cargo build --release # compile Aphanite
+deno install
+deno task build
 ```
 
 Wait a moment. After compilation, the `aphanite` binary will be at `source_dir/target/release`.

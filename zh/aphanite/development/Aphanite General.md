@@ -484,6 +484,35 @@ type Payload=User;
 
 Profile 是 Minecraft 中一个玩家实体对应的属性，包含玩家名、玩家 UUID 和玩家纹理等信息。
 
+### 列出用户的 Profile <Badge type="tip" text="需要鉴权" />
+
+列出当前用户或指定用户的所有玩家档案。
+
+```http
+GET /users/{id}/profiles?with_skin={bool}
+GET /users/me/profiles?with_skin={bool}
+```
+
+返回体：
+
+```typescript
+type Payload = Array<{
+  metadata: Profile;
+  skin?: ProfileSkin;
+}>;
+```
+
+- 如果鉴权信息错误，返回 `401 Unauthorized`。
+- 如果请求省略 ID 的端点：
+  - 成功。
+- 如果指定了用户 ID：
+  - 如果 ID 是当前用户，成功。
+  - 否则，如果当前用户没有 Management 权限，返回 `403 Forbidden`。
+  - 如果当前用户有 Management 权限，但目标用户不存在，返回 `404 Not Found`。
+  - 如果当前用户有 Management 权限，且目标用户存在，成功。
+
+同[下](#get-profile)，玩家档案有可能没有设置皮肤和披风，就算指定了 `with_skin=true`，返回的 `skin` 也有可能是个空对象。
+
 ### 创建 Profile <Badge type="tip" text="需要鉴权" />
 
 ```http
@@ -521,7 +550,7 @@ type Payload = Profile;
     - 若当前用户有 Management 权限，成功。
     - 否则，返回 `403 Forbidden`。
 
-### 获取 Profile 信息
+### 获取 Profile 信息 {#get-profile}
 
 该端点不需要鉴权。
 
@@ -564,6 +593,13 @@ type Payload = Profile;
 ```
 
 该端点的鉴权和“删除 Profile”端点相同。
+
+这里的 name 是 Minecraft 玩家名称，具有与官方的 Minecraft: Java Edition 玩家名相同的限制（否则游戏会报错“无效字符”并拒绝进入世界），即：
+
+- 长度在 3-16 个字符之间；
+- 仅包含字母、数字和下划线。
+
+若要修改的玩家名称未能满足这些要求，返回 `400 Bad Request`。
 
 ### 修改皮肤  <Badge type="tip" text="需要鉴权" />
 

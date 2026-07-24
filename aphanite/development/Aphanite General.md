@@ -496,6 +496,35 @@ type Payload=User;
 
 A Profile represents a Minecraft player entity — containing the player name, UUID, textures, etc.
 
+### List User Profiles <Badge type="tip" text="Auth required" />
+
+List all player profiles for the current user or a specified user.
+
+```http
+GET /users/{id}/profiles?with_skin={bool}
+GET /users/me/profiles?with_skin={bool}
+```
+
+Response:
+
+```typescript
+type Payload = Array<{
+  metadata: Profile;
+  skin?: ProfileSkin;
+}>;
+```
+
+- If the auth info is invalid → `401 Unauthorized`.
+- If requesting the endpoint without an ID:
+  - Succeeds.
+- If a user ID is specified:
+  - If the ID matches the current user → succeeds.
+  - Otherwise, if the current user does not have Management permission → `403 Forbidden`.
+  - If the current user has Management permission but the target user does not exist → `404 Not Found`.
+  - If the current user has Management permission and the target user exists → succeeds.
+
+Same as [below](#get-profile), a profile may not have skin or cape set — even if `with_skin=true` is specified, the returned `skin` may be an empty object.
+
 ### Create Profile <Badge type="tip" text="Auth required" />
 
 ```http
@@ -533,7 +562,7 @@ type Payload = Profile;
     - If the current user has Management permission → succeeds.
     - Otherwise → `403 Forbidden`.
 
-### Get Profile Info
+### Get Profile Info {#get-profile}
 
 This endpoint does not require authentication.
 
@@ -575,6 +604,13 @@ type Payload = Profile;
 ```
 
 Authentication for this endpoint is the same as the "Delete Profile" endpoint.
+
+The `name` here is a Minecraft player name, subject to the same constraints as the official Minecraft: Java Edition player names (otherwise the game will report "Invalid characters" and refuse to enter the world):
+
+- Length between 3–16 characters;
+- Only letters, digits, and underscores allowed.
+
+If the player name being modified does not meet these requirements, `400 Bad Request` is returned.
 
 ### Update Texture <Badge type="tip" text="Auth required" />
 

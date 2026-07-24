@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "required": [
+    "capes"
+  ],
+  "properties": {
+    "$description": {
+      "type": "string",
+      "description": "General description, meant for the person who's looking into that JSON file"
+    },
+    "capes": {
+      "type": "array",
+      "description": "A list of available pre-defined capes that would be shown when uploading capes as the default options",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Full URL of the cape file"
+          },
+          "name_en": {
+            "type": "string",
+            "description": "Human readable English name of this cape"
+          },
+          "name_zh": {
+            "type": "string",
+            "description": "Human readable Simplified Chinese name for this cape"
+          }
+        },
+        "required": [
+          "url",
+          "name_en",
+          "name_zh"
+        ]
+      }
+    }
+  }
+}
