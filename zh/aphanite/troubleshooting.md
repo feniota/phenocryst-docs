@@ -18,7 +18,7 @@ Aphanite 使用[我们用 WebGPU 编写的超轻量 3D 皮肤预览器](https://
 |--------|----------|
 | Chromium 113+ (Windows/macOS) | 完全支持 |
 | Chromium 144+ (Linux) | 非 Intel 12 代以上 GPU 的设备需手动开启 |
-| Firefox 147+ | 部分支持（不支持 Intel Mac 和 Linux） |
+| Firefox 147+ | Intel Mac 和 Linux 需手动开启 |
 | Firefox (Android) | 不支持 |
 | 其余手机浏览器 | 完全支持 |
 
@@ -26,7 +26,7 @@ Aphanite 使用[我们用 WebGPU 编写的超轻量 3D 皮肤预览器](https://
 
 极有可能是因为您没有通过[安全上下文](https://developer.mozilla.org/zh-CN/docs/Web/Security/Defenses/Secure_Contexts)访问 Aphanite，或者可以简单地理解为非 HTTP**S**。
 
-- 如果您是用户，在其他人给您的链接里看到了“WebGPU 不支持”，请告诉给您链接的那个人，让 TA 配置 HTTPS。
+- 如果您是用户，在其他人给您的链接里看到了这一报错，请告诉给您链接的那个人，让 TA 配置 HTTPS。
 - 如果您正在部署和测试 Aphanite，请确保您的 Aphanite 实例配置了[反向代理](/zh/aphanite/deployment#port-forwarding)。
 - 如果您正在开发 Aphanite，请确保您是通过本机回环网卡（`localhost`、`127.0.0.1` 或 `[::1]`）访问的。
 

@@ -18,7 +18,7 @@ The table below provides a general overview. For details, please refer to the [c
 |-------------|-------------------|
 | Chromium 113+ (Windows/macOS) | Fully supported |
 | Chromium 144+ (Linux) | Requires manual enablement on GPUs older than Intel 12th Gen |
-| Firefox 147+ |  Partially supported (Not supported on Intel Mac and Linux) |
+| Firefox 147+ |  Requires manual enablement on Intel Mac and Linux |
 | Firefox (Android) | Not supported |
 | Other mobile browsers | Fully supported |
 
@@ -26,7 +26,7 @@ The table below provides a general overview. For details, please refer to the [c
 
 It is very likely that you are not accessing Aphanite through a [secure context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts), or simply put, not over HTTP**S**.
 
-- If you are a user and see "WebGPU not supported" on a link someone shared with you, please let them know they need to configure HTTPS.
+- If you are a user and see this error on a link someone shared with you, please let them know they need to configure HTTPS.
 - If you are deploying or testing Aphanite, make sure your Aphanite instance is configured with a [reverse proxy](/aphanite/deployment#port-forwarding).
 - If you are developing Aphanite, ensure you are accessing it via the local loopback interface (`localhost`, `127.0.0.1`, or `[::1]`).
 
