@@ -2,8 +2,7 @@
 import { inBrowser } from "vitepress";
 import { onMounted, onUnmounted } from "vue";
 
-// TODO: Replace with your actual AI Search instance public endpoint
-const SEARCH_API_URL = "https://<INSTANCE_ID>.search.ai.cloudflare.com/";
+const SEARCH_API_URL = "https://21995922-3f2c-4ecf-8d89-f626c7d4c050.search.ai.cloudflare.com/";
 
 let snippetAttached = false;
 
