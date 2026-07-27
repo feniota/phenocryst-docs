@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "如何安装并运行 Aphanite — 独立二进制、Docker 或从源码编译。"
 ---
 
 # 安装

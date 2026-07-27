@@ -1,3 +1,7 @@
+---
+description: "Aphanite 主题图片所用模组和着色器的致谢。"
+---
+
 # Aphanite 主题图片所用模组致谢
 
 ![Aphanite 主题图片](/assets/theme.avif)

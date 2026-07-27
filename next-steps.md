@@ -1,3 +1,7 @@
+---
+description: "What to do after downloading Phenocryst — instructions for players and server owners."
+---
+
 # Next Steps
 
 ## If You Are a Player

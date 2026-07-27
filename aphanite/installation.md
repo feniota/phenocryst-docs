@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "How to install and run Aphanite — standalone binary, Docker, or compile from source."
 ---
 
 # Installation

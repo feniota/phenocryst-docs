@@ -9,6 +9,25 @@ export default defineConfig({
   description: "Documentation of Aphanite and Phanerite",
 
   // sitemap for AI Search crawler
+  // Auto-inject AI Search-compatible meta tags for every page
+  transformPageData(pageData) {
+    const title =
+      pageData.frontmatter.layout === "home"
+        ? "Phenocryst Docs"
+        : pageData.title;
+
+    pageData.frontmatter.head ??= [];
+    // AI Search picks up title from <meta name="title"> or <meta property="og:title">
+    pageData.frontmatter.head.push([
+      "meta",
+      { name: "title", content: title },
+    ]);
+    pageData.frontmatter.head.push([
+      "meta",
+      { property: "og:title", content: title },
+    ]);
+  },
+
   lastUpdated: true,
   sitemap: {
     hostname: "https://phenocryst.ferris.love",

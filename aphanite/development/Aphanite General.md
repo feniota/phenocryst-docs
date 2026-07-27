@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "General API reference covering conventions, endpoints, and data types used throughout Aphanite."
 ---
 
 # Aphanite General API

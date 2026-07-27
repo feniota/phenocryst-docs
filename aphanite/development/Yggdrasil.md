@@ -1,3 +1,7 @@
+---
+description: "Aphanite implements the Yggdrasil service for Minecraft player authentication and texture distribution."
+---
+
 # Yggdrasil API
 
 Aphanite implements the Yggdrasil service under `<aphanite_base_url>/api/yggdrasil`. Through authlib-injector, Aphanite can replace Mojang servers for player authentication and texture distribution.

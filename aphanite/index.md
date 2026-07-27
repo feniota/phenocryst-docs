@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "Aphanite is an all-in-one Minecraft offline-mode server that bundles Yggdrasil authentication, a web dashboard, and mod management."
 ---
 
 # Introduction

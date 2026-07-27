@@ -2,6 +2,7 @@
 prev:
   text: "Aphanite User Documentation"
   link: "/aphanite/"
+description: "Technical documentation for developers contributing to Aphanite."
 ---
 
 # Aphanite Developer Documentation

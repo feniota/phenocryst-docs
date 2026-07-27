@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "Aphanite 是一个集成 Yggdrasil 认证、网页管理面板和模组管理的 Minecraft 离线模式服务端。"
 ---
 
 # 介绍

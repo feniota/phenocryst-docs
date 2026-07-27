@@ -1,3 +1,7 @@
+---
+description: "Credits for the mods and shaders used in the Aphanite theme image."
+---
+
 # Credits of Mods Used in Aphanite Theme Image
 
 ![Aphanite Theme Image](/assets/theme.avif)

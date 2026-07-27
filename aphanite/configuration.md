@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "Aphanite configuration file reference, written in TOML format."
 ---
 
 # Configuration

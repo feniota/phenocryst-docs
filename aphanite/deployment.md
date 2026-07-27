@@ -1,6 +1,7 @@
 ---
 outline: "deep"
 next: false
+description: "Deploy Aphanite behind a reverse proxy with TLS for production use."
 ---
 
 # Deployment

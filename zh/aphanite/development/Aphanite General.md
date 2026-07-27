@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "Aphanite 通用 API 参考，涵盖约定、端点和数据类型。"
 ---
 
 # Aphanite General API

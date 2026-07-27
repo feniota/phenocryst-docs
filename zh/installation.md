@@ -1,3 +1,7 @@
+---
+description: "Aphanite 和 Phanerite 的下载链接。"
+---
+
 # 安装
 
 如[上文](/zh/)所述，Phenocryst 有两个部分。这里提供它们的下载地址。

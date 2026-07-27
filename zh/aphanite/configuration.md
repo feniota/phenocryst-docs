@@ -1,5 +1,6 @@
 ---
 outline: "deep"
+description: "Aphanite 配置文件参考，使用 TOML 格式。"
 ---
 
 # 配置

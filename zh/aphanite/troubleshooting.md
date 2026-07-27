@@ -1,3 +1,7 @@
+---
+description: "使用 Aphanite 时常见的问题和解决方法。"
+---
+
 # 疑难解答
 
 ## WebGPU 不可用，无法加载 3D 皮肤预览。 {#webgpu-not-available}

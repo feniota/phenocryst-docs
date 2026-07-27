@@ -1,3 +1,7 @@
+---
+description: "Phenocryst 是一个服务器（Aphanite）— 客户端（Phanerite）系统，为 Minecraft 模组私服提供一键启动体验。"
+---
+
 # Phenocryst
 
 > 斑晶（Phenocryst）是一种早期形成、相对较大且通常明显大于火成岩基质颗粒的晶体。

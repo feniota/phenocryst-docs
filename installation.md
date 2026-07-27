@@ -1,3 +1,7 @@
+---
+description: "Download links for Aphanite server and Phanerite launcher."
+---
+
 # Installation
 
 As [mentioned](/), Phenocryst has two parts. Here are their download links.

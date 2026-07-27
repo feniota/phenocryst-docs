@@ -1,3 +1,7 @@
+---
+description: "Common issues and solutions when using Aphanite."
+---
+
 # Troubleshooting
 
 ## Cannot Load 3D Skin Preview: WebGPU Unavailable {#webgpu-not-available}

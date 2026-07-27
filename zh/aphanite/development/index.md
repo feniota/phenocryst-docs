@@ -2,6 +2,7 @@
 prev:
   text: "Aphanite 用户文档"
   link: "/zh/aphanite/"
+description: "面向开发者的 Aphanite 技术文档。"
 ---
 
 # Aphanite 开发者文档
