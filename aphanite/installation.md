@@ -59,12 +59,15 @@ If you're using a lightweight distro like Alpine, your system may not use `glibc
 After downloading, copy the Aphanite executable to an **empty directory where your current user has read and write permissions**, then run:
 
 ::: code-group
+
 ```bash [Linux or macOS]
 ./aphanite init
 ```
+
 ```powershell [Windows]
 & "./aphanite.exe" init
 ```
+
 :::
 
 Congratulations — your Aphanite is now ready to start!

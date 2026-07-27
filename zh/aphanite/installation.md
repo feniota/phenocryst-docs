@@ -59,12 +59,15 @@ ldd --version
 下载好之后，请将 Aphanite 可执行文件复制到一个**当前用户有读写权限**的空目录中，然后运行：
 
 ::: code-group
+
 ```bash [Linux 或 macOS]
 ./aphanite init
 ```
+
 ```powershell [Windows]
 & "./aphanite.exe" init
 ```
+
 :::
 
 恭喜你，现在你的 Aphanite 已经可以启动了！

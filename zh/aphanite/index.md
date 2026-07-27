@@ -6,7 +6,7 @@ outline: "deep"
 
 > 隐晶岩（英语：Aphanite）是指颗粒非常细的火成岩，肉眼看不到它们的组成矿物晶体。
 >
-> *——[维基百科](https://zh.wikipedia.org/wiki/%E9%9A%90%E6%99%B6%E5%B2%A9)*
+> _——[维基百科](https://zh.wikipedia.org/wiki/%E9%9A%90%E6%99%B6%E5%B2%A9)_
 
 Aphanite 是 Phenocryst 系统的中央服务器。它承担玩家信息管理、进行 Minecraft 身份验证、管理和下发整合包配置的职责。
 

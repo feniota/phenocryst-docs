@@ -1,0 +1,47 @@
+/* Hide VP's empty search div (no search provider configured).
+   It would otherwise take up flex-grow: 1 space in the navbar. */
+.VPNavBarSearch {
+  display: none !important;
+}
+
+/* The AI Search button wrapper injected via nav-bar-content-before slot.
+   Column layout stacks the button and the hidden modal snippet without
+   the snippet's native width: 100% / min-width: 320px affecting flex layout.
+   align-items: start keeps the button left-aligned. */
+.aisearch-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  order: -99;
+}
+
+@media (min-width: 768px) {
+  .aisearch-wrapper {
+    flex-grow: 1;
+    padding-left: 24px;
+  }
+}
+
+@media (min-width: 960px) {
+  .aisearch-wrapper {
+    padding-left: 32px;
+  }
+}
+
+/* The button defaults to 48px icon on mobile. On desktop the
+   scoped CSS in AiSearchButton.vue drops the fixed width so the
+   button sizes naturally around its content ("Search" + Ctrl K). */
+
+/* The search-modal-snippet web component is attached to <body>
+   at runtime, so it is immune to VP's nested stacking contexts. */
+
+/* ── CF AI Search Snippet theming ───────────────────────────── */
+search-modal-snippet {
+  --search-snippet-primary-color: var(--vp-c-brand-1);
+  --search-snippet-background-color: var(--vp-c-bg-soft);
+  --search-snippet-text-color: var(--vp-c-text-1);
+  --search-snippet-muted-color: var(--vp-c-text-2);
+  --search-snippet-border-color: var(--vp-c-divider);
+  --search-snippet-hover-background-color: var(--vp-c-default-soft);
+  --search-snippet-border-radius: 8px;
+}

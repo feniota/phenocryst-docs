@@ -6,7 +6,7 @@ outline: "deep"
 
 > Aphanites are igneous rocks that are so fine-grained that their component mineral crystals are not visible to the naked eye.
 >
-> *— [Wikipedia](https://en.wikipedia.org/wiki/Aphanite)*
+> _— [Wikipedia](https://en.wikipedia.org/wiki/Aphanite)_
 
 [Aphanite](https://github.com/feniota/aphanite) is the central server of a Phenocryst system. It handles player information management, Minecraft authentication, and distribution of modpack configurations.
 
@@ -41,4 +41,3 @@ As the central server of Phenocryst, Aphanite:
 - Distributes modpack file hashes to clients for comparison. If the cloud modpack differs from the local one, the client downloads the new version.
 
 Beyond that, Aphanite also has the usual features like user management that most server software has — we won't go into detail here.
-

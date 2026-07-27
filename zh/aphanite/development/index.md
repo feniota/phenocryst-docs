@@ -1,5 +1,5 @@
 ---
-prev: 
+prev:
   text: "Aphanite 用户文档"
   link: "/zh/aphanite/"
 ---

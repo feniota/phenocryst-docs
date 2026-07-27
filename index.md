@@ -1,8 +1,8 @@
 # Phenocryst
 
 > A phenocryst is an early forming, relatively large and usually conspicuous crystal distinctly larger than the grains of the rock groundmass of an igneous rock.
-> 
-> *— [Wikipedia](https://en.wikipedia.org/wiki/Phenocryst)*
+>
+> _— [Wikipedia](https://en.wikipedia.org/wiki/Phenocryst)_
 
 Phenocryst is a pair of server ([Aphanite](/aphanite/)) and client ([Phanerite](/phanerite/)), aiming to provide an one-click-to-launch experience for private modded Minecraft servers.
 

@@ -1,179 +1,208 @@
 import { defineConfig } from "vitepress";
 // @ts-ignore
 import footnote from "markdown-it-footnote";
+import llmstxt, { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: "Phenocryst Docs",
-    description: "Documentation of Aphanite and Phanerite",
-    locales: {
-        root: {
-            label: "English",
-            lang: "en",
-        },
-        zh: {
-            title: "Phenocryst 文档",
-            description: "Aphanite 和 Phanerite 的文档",
-            label: "简体中文",
-            lang: "zh",
-            themeConfig: {
-                nav: [
-                    {
-                        text: "首页",
-                        link: "/zh/",
-                    },
-                    {
-                        text: "Aphanite",
-                        link: "/zh/aphanite/",
-                        activeMatch: "/aphanite/",
-                    },
-                    {
-                        text: "Phanerite",
-                        link: "/zh/phanerite/",
-                        activeMatch: "/phanerite/",
-                    },
-                ],
+  title: "Phenocryst Docs",
+  description: "Documentation of Aphanite and Phanerite",
 
-                sidebar: {
-                    "/zh": [
-                        {
-                            text: "Phenocryst",
-                            items: [
-                                { text: "介绍", link: "/zh/" },
-                                { text: "安装", link: "/zh/installation" },
-                                { text: "下一步", link: "/zh/next-steps" },
-                            ],
-                        },
-                    ],
-                    "/zh/aphanite/": [
-                        {
-                            text: "Aphanite",
-                            items: [
-                                { text: "介绍", link: "/zh/aphanite/" },
-                                {
-                                    text: "安装",
-                                    link: "/zh/aphanite/installation",
-                                },
-                                {
-                                    text: "运行",
-                                    link: "/zh/aphanite/running",
-                                },
-                                {
-                                    text: "配置",
-                                    link: "/zh/aphanite/configuration",
-                                },
-                                {
-                                    text: "部署",
-                                    link: "/zh/aphanite/deployment",
-                                },
-                                {
-                                    text: "开发者文档",
-                                    link: "/zh/aphanite/development/",
-                                },
-                            ],
-                        },
-                    ],
-                    "/zh/aphanite/development/": [
-                        {
-                            text: "Aphanite 开发者文档",
-                            items: [
-                                {
-                                    text: "首页",
-                                    link: "/zh/aphanite/development/",
-                                },
-                                {
-                                    text: "General API",
-                                    link: "/zh/aphanite/development/Aphanite General",
-                                },{
-                                    text: "Yggdrasil API",
-                                    link: "/zh/aphanite/development/Yggdrasil",
-                                },
-                            ],
-                        },
-                    ],
-                },
-            },
-        },
+  // sitemap for AI Search crawler
+  lastUpdated: true,
+  sitemap: {
+    hostname: "https://phenocryst.ferris.love",
+  },
+
+  // Tell the Vue template compiler that CF AI Search web components
+  // (e.g. <search-modal-snippet>) are native custom elements, not Vue
+  // components — eliminates dev-mode runtime warnings.
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag: string) => tag.startsWith("search-"),
+      },
     },
-    themeConfig: {
-        // https://vitepress.dev/reference/default-theme-config
+  },
+
+  vite: {
+    plugins: [
+      llmstxt({
+        excludeIndexPage: false,
+        injectLLMHint: false,
+      }),
+    ],
+  },
+  locales: {
+    root: {
+      label: "English",
+      lang: "en",
+    },
+    zh: {
+      title: "Phenocryst 文档",
+      description: "Aphanite 和 Phanerite 的文档",
+      label: "简体中文",
+      lang: "zh",
+      themeConfig: {
         nav: [
-            { text: "Home", link: "/" },
-            { text: "Aphanite", link: "/aphanite/", activeMatch: "/aphanite/" },
-            {
-                text: "Phanerite",
-                link: "/phanerite/",
-                activeMatch: "/phanerite/",
-            },
+          {
+            text: "首页",
+            link: "/zh/",
+          },
+          {
+            text: "Aphanite",
+            link: "/zh/aphanite/",
+            activeMatch: "/aphanite/",
+          },
+          {
+            text: "Phanerite",
+            link: "/zh/phanerite/",
+            activeMatch: "/phanerite/",
+          },
         ],
 
         sidebar: {
-            "/": [
-                {
-                    text: "Phenocryst",
-                    items: [
-                        { text: "Introduction", link: "/" },
-                        { text: "Installation", link: "/installation" },
-                        { text: "Next Steps", link: "/next-steps" },
-                    ],
-                },
-            ],
-            "/aphanite/": [
-                {
-                    text: "Aphanite",
-                    items: [
-                        { text: "Introduction", link: "/aphanite/" },
-                        {
-                            text: "Installation",
-                            link: "/aphanite/installation",
-                        },
-                        {
-                            text: "Running",
-                            link: "/aphanite/running",
-                        },
-                        {
-                            text: "Configuration",
-                            link: "/aphanite/configuration",
-                        },
-                        {
-                            text: "Deployment",
-                            link: "/aphanite/deployment",
-                        },
-                        {
-                            text: "Developer Docs",
-                            link: "/aphanite/development/",
-                        },
-                    ],
-                },
-            ],
-            "/aphanite/development/": [
-                {
-                    text: "Aphanite Developer Docs",
-                    items: [
-                        { text: "Home", link: "/aphanite/development/" },
-                        {
-                            text: "General API",
-                            link: "/aphanite/development/Aphanite General",
-                        },
-                        {
-                            text: "Yggdrasil API",
-                            link: "/aphanite/development/Yggdrasil",
-                        },
-                    ],
-                },
-            ],
-        },
-
-        socialLinks: [
+          "/zh": [
             {
-                icon: "github",
-                link: "https://github.com/feniota/phenocryst-docs",
+              text: "Phenocryst",
+              items: [
+                { text: "介绍", link: "/zh/" },
+                { text: "安装", link: "/zh/installation" },
+                { text: "下一步", link: "/zh/next-steps" },
+              ],
             },
-        ],
-    },
-    markdown: {
-        config: (md) => {
-            md.use(footnote);
+          ],
+          "/zh/aphanite/": [
+            {
+              text: "Aphanite",
+              items: [
+                { text: "介绍", link: "/zh/aphanite/" },
+                {
+                  text: "安装",
+                  link: "/zh/aphanite/installation",
+                },
+                {
+                  text: "运行",
+                  link: "/zh/aphanite/running",
+                },
+                {
+                  text: "配置",
+                  link: "/zh/aphanite/configuration",
+                },
+                {
+                  text: "部署",
+                  link: "/zh/aphanite/deployment",
+                },
+                {
+                  text: "开发者文档",
+                  link: "/zh/aphanite/development/",
+                },
+              ],
+            },
+          ],
+          "/zh/aphanite/development/": [
+            {
+              text: "Aphanite 开发者文档",
+              items: [
+                {
+                  text: "首页",
+                  link: "/zh/aphanite/development/",
+                },
+                {
+                  text: "General API",
+                  link: "/zh/aphanite/development/Aphanite General",
+                },
+                {
+                  text: "Yggdrasil API",
+                  link: "/zh/aphanite/development/Yggdrasil",
+                },
+              ],
+            },
+          ],
         },
+      },
     },
+  },
+  themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
+    nav: [
+      { text: "Home", link: "/" },
+      { text: "Aphanite", link: "/aphanite/", activeMatch: "/aphanite/" },
+      {
+        text: "Phanerite",
+        link: "/phanerite/",
+        activeMatch: "/phanerite/",
+      },
+    ],
+
+    sidebar: {
+      "/": [
+        {
+          text: "Phenocryst",
+          items: [
+            { text: "Introduction", link: "/" },
+            { text: "Installation", link: "/installation" },
+            { text: "Next Steps", link: "/next-steps" },
+          ],
+        },
+      ],
+      "/aphanite/": [
+        {
+          text: "Aphanite",
+          items: [
+            { text: "Introduction", link: "/aphanite/" },
+            {
+              text: "Installation",
+              link: "/aphanite/installation",
+            },
+            {
+              text: "Running",
+              link: "/aphanite/running",
+            },
+            {
+              text: "Configuration",
+              link: "/aphanite/configuration",
+            },
+            {
+              text: "Deployment",
+              link: "/aphanite/deployment",
+            },
+            {
+              text: "Developer Docs",
+              link: "/aphanite/development/",
+            },
+          ],
+        },
+      ],
+      "/aphanite/development/": [
+        {
+          text: "Aphanite Developer Docs",
+          items: [
+            { text: "Home", link: "/aphanite/development/" },
+            {
+              text: "General API",
+              link: "/aphanite/development/Aphanite General",
+            },
+            {
+              text: "Yggdrasil API",
+              link: "/aphanite/development/Yggdrasil",
+            },
+          ],
+        },
+      ],
+    },
+
+    socialLinks: [
+      {
+        icon: "github",
+        link: "https://github.com/feniota/phenocryst-docs",
+      },
+    ],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(footnote);
+      md.use(copyOrDownloadAsMarkdownButtons);
+    },
+  },
 });

@@ -14,22 +14,24 @@ Unless otherwise specified, both the Aphanite General API and Phenocryst API fol
 
 1. Request and response bodies must be in JSON format, with the correct `Content-Type: application/json` header.
 2. The server responds with the following format regardless of success:
-    ```typescript
-    type Response<Payload> = {
-      success: boolean; // Whether the operation succeeded
-      payload?: Payload; // The actual response data on success
-      reason?: string; // A human-readable error reason on failure
-    };
+   ```typescript
+   type Response<Payload> = {
+     success: boolean; // Whether the operation succeeded
+     payload?: Payload; // The actual response data on success
+     reason?: string; // A human-readable error reason on failure
+   };
 
-    // Or more specifically:
-    type Response<Payload> = {
-      success: true;
-      payload: Payload;
-    } | {
-      success: false;
-      reason: string;
-    };
-    ```
+   // Or more specifically:
+   type Response<Payload> =
+     | {
+         success: true;
+         payload: Payload;
+       }
+     | {
+         success: false;
+         reason: string;
+       };
+   ```
    If an error occurs, the HTTP status code should be set appropriately, but the `reason` field should contain the actual cause of the error — it doesn't have to match the HTTP Reason Phrase.
    The `payload` type is unrestricted and can be any JSON-representable type (determined by the specific business API), but cannot be empty. If there's nothing meaningful to return, use `204 No Content`. All response body types mentioned below are treated as the `Payload` generic parameter here.
 3. All endpoint paths mentioned below are subdirectories of `<aphanite_base_url>/api`.
@@ -41,31 +43,31 @@ Common data models referenced in the responses below.
 ```typescript
 // User metadata
 type User = {
-    id: string; // User UUID
-    name: string; // User name (note: not unique)
-    email: string; // User email
-    permissions: Permission[]; // User permissions
+  id: string; // User UUID
+  name: string; // User name (note: not unique)
+  email: string; // User email
+  permissions: Permission[]; // User permissions
 };
 
 // User permissions. Stored as numeric bit flags internally,
 // but serialized as an enum array. Clients just need to parse the enum.
 const enum Permission {
-    Management = "management",
+  Management = "management",
 }
 
 // Player profile metadata
 type Profile = {
-    id: string; // Profile UUID
-    name: string; // In-game name. **ASCII strings only**
-    owner: string; // UUID of the Aphanite user who owns this profile
+  id: string; // Profile UUID
+  name: string; // In-game name. **ASCII strings only**
+  owner: string; // UUID of the Aphanite user who owns this profile
 };
 
 // Player skin data
 type ProfileSkin = {
-    skin?: string; // Skin URL
-    model?: "default" | "slim"; // Arm thickness
-    cape?: string; // Cape URL
-}
+  skin?: string; // Skin URL
+  model?: "default" | "slim"; // Arm thickness
+  cape?: string; // Cape URL
+};
 ```
 
 ## Authentication
@@ -88,13 +90,15 @@ Request body:
 
 ```typescript
 type Request = {
-    email: string; // Account email
-    password?: string; // Account password (plain text)
-    otp_token?: string; // OTP challenge result
-}
+  email: string; // Account email
+  password?: string; // Account password (plain text)
+  otp_token?: string; // OTP challenge result
+};
 ```
 
 The `otp_token` value and how to obtain it are described in [OTP Verification](#otp).
+
+`password` and `otp_token`: at least one is required; if both are provided, `password` takes precedence.
 
 The purpose of OTP here is to prevent credential-stuffing attacks in case Aphanite's password database is leaked. However, unlike traditional security practices, OTP in Aphanite acts as 1FA — it carries the same authority as a password. This does make Aphanite somewhat less secure.
 
@@ -104,11 +108,15 @@ Response:
 
 ```typescript
 type Payload = {
-    access_token: string;
-    client_token: string;
-    user: User;
-}
+  access_token: string;
+  client_token: string;
+  user: User;
+};
 ```
+
+- Returns `400 Bad Request` if neither `password` nor `otp_token` is provided.
+- Returns `403 Forbidden` if credentials are invalid.
+- Returns `429 Too Many Requests` if the request frequency is too high.
 
 Note: Client Token is only used in special Yggdrasil API scenarios. We agree to ignore it in Aphanite General and Phenocryst APIs. However, launchers should still store it for when it's needed.
 
@@ -126,9 +134,9 @@ Response:
 
 ```typescript
 type Payload = {
-    access_token: string; // New Access Token
-    user: User; // The user info associated with the token; launchers should update their local storage — useful if the user has changed their info
-}
+  access_token: string; // New Access Token
+  user: User; // The user info associated with the token; launchers should update their local storage — useful if the user has changed their info
+};
 ```
 
 The Client Token remains unchanged after refreshing; the server no longer returns it.
@@ -189,9 +197,9 @@ Request body:
 
 ```typescript
 type Request = {
-    email: string;
-    method: string;
-}
+  email: string;
+  method: string;
+};
 ```
 
 As of Aphanite v0.1.0, `method` only supports `totp`.
@@ -200,11 +208,11 @@ Response:
 
 ```typescript
 type Payload = {
-    id: string;
-}
+  id: string;
+};
 ```
 
-- Returns `400 Bad Request` if the user has no [activated](#activate-totp) [TOTP private key](#new-totp-privkey).
+- Returns `400 Bad Request` if the user has no [TOTP private key](#new-totp-privkey).
 
 ### Complete OTP Verification {#validate-otp}
 
@@ -216,16 +224,16 @@ Request body:
 
 ```typescript
 type Request = {
-    code: string; // OTP verification code
-}
+  code: string; // OTP verification code
+};
 ```
 
 Response:
 
 ```typescript
 type Payload = {
-    otp_token: string;
-}
+  otp_token: string;
+};
 ```
 
 - Returns `404 Not Found` if the OTP session ID doesn't exist.
@@ -258,6 +266,23 @@ Permission check:
 - Requesting `/users/{id}` where `id` differs — checks if the current user has Management permission.
 - Returns `401 Unauthorized` if no auth or invalid auth.
 
+### Get User By Email <Badge type="danger" text="Auth required (Admin)" />
+
+```http
+GET /users/by-email/{email}
+```
+
+Allows administrators to look up a user by their email address.
+
+Response:
+
+```typescript
+type Payload = User;
+```
+
+- Requires Management permission; otherwise returns `403 Forbidden`.
+- Returns `404 Not Found` if the email doesn't match any user.
+
 ### Update User Metadata <Badge type="tip" text="Auth required" />
 
 ```http
@@ -269,9 +294,9 @@ Request body:
 
 ```typescript
 type Request = {
-    name?: string;
-    email?: string;
-}
+  name?: string;
+  email?: string;
+};
 ```
 
 Response:
@@ -295,10 +320,10 @@ Request body:
 
 ```typescript
 type Request = {
-    old_password?: string;
-    otp_token?: string;
-    new_password: string;
-}
+  old_password?: string;
+  otp_token?: string;
+  new_password: string;
+};
 ```
 
 Returns `204 No Content` on success.
@@ -306,11 +331,11 @@ Returns `204 No Content` on success.
 Permission check:
 
 - Without valid auth:
-    - Cannot request the ID-less endpoint.
-    - Must provide `otp_token` or `old_password`.
+  - Cannot request the ID-less endpoint.
+  - Must provide `otp_token` or `old_password`.
 - With valid auth:
-    - May omit `otp_token` and `old_password`.
-    - Other restrictions same as [Get User Info](#get-user-info).
+  - May omit `otp_token` and `old_password`.
+  - Other restrictions same as [Get User Info](#get-user-info).
 
 The `otp_token` semantics and how to obtain it are described in [OTP Verification](#otp).
 
@@ -328,34 +353,14 @@ Response:
 
 ```typescript
 type Payload = {
-    secret: string; // TOTP secret key
-    otpauth_url: string; // Secret key URL in otpauth:// format
-}
+  secret: string; // TOTP secret key
+  otpauth_url: string; // Secret key URL in otpauth:// format
+};
 ```
-
-The TOTP is temporary at this point. The user must complete a TOTP challenge to confirm successful setup (see [Activate TOTP](#activate-totp)).
 
 After a successful request, the old TOTP key is immediately invalidated. Phanerite should store the new key.
 
 Note: This endpoint has no user-ID-parameterized version; it only operates on the currently logged-in user.
-
-### Activate TOTP <Badge type="tip" text="Auth required" /> {#activate-totp}
-
-A newly issued or rotated TOTP key is considered inactive and cannot be used for authentication. The client must perform the following operation once to activate it.
-
-```http
-PATCH /users/me/credentials/totp
-```
-
-Request body:
-
-```typescript
-type Request = {
-    otp_token: string;
-}
-```
-
-Returns `204 No Content` on success.
 
 ### Disable TOTP <Badge type="tip" text="Auth required" />
 
@@ -377,10 +382,10 @@ Request body:
 
 ```typescript
 type Request = {
-    email: string;
-    name?: string; // Uses email if not specified
-    permissions: Permission[];
-}
+  email: string;
+  name?: string; // Uses email if not specified
+  permissions: Permission[];
+};
 ```
 
 Response:
@@ -414,9 +419,9 @@ GET /turnstile
 Response:
 
 ```typescript
-type Payload={
-  site_key:string;
-}
+type Payload = {
+  site_key: string;
+};
 ```
 
 - Returns `403 Forbidden` if the server hasn't enabled public registration.
@@ -439,15 +444,15 @@ POST /register/session
 Request body:
 
 ```typescript
-type Payload = {
+type Request = {
   expires_after: number; // Registration token lifetime in minutes, max 10080 minutes (7 days)
-}
+};
 ```
 
 Response:
 
 ```typescript
-type Payload={
+type Payload = {
   token: string;
 };
 ```
@@ -456,7 +461,6 @@ type Payload={
 
 Both private and public instances use the same `/register` endpoint. However, depending on the registration type and whether Turnstile is enabled, `turnstile_token` and `register_token` are optional.
 
-
 ```http
 POST /register
 ```
@@ -464,19 +468,19 @@ POST /register
 Request body:
 
 ```typescript
-type Request={
-  register_token?:string;
-  turnstile_token?:string;
-  email:string;
-  name?:string; // Defaults to email if not specified. Should not exceed 20 characters.
-  password:string; // Should be more than 8 characters and less than 128 characters.
-}
+type Request = {
+  register_token?: string;
+  turnstile_token?: string;
+  email: string;
+  name?: string; // Defaults to email if not specified. Should be between 1 and 20 characters.
+  password: string; // Should be more than 8 characters and less than 128 characters.
+};
 ```
 
 Response:
 
 ```typescript
-type Payload=User;
+type Payload = User;
 ```
 
 - If the server has public registration enabled:
@@ -490,7 +494,8 @@ type Payload=User;
   - If no registration token is provided (Turnstile token ignored) → `400 Bad Request`.
   - If a registration token is provided but fails validation → `403 Forbidden`.
 - If the email conflicts with an existing user → `409 Conflict`.
-- If the name and password failed the length checks → `418 I'm a Teapot`.
+- If the name failed the length checks (must be 1–20 characters) → `418 I'm a Teapot`.
+- If the password failed the length checks (must be 8–128 characters) → `422 Unprocessable Content`.
 
 ## Profiles
 
@@ -535,8 +540,8 @@ Request body:
 
 ```typescript
 type Request = {
-    name: string;
-}
+  name: string;
+};
 ```
 
 Response:
@@ -559,8 +564,8 @@ type Payload = Profile;
 
 - Returns `404 Not Found` if the target profile doesn't exist.
 - If the target profile exists but doesn't belong to the current user:
-    - If the current user has Management permission → succeeds.
-    - Otherwise → `403 Forbidden`.
+  - If the current user has Management permission → succeeds.
+  - Otherwise → `403 Forbidden`.
 
 ### Get Profile Info {#get-profile}
 
@@ -576,9 +581,9 @@ Response:
 
 ```typescript
 type Payload = {
-    metadata: Profile;
-    skin?: ProfileSkin;
-}
+  metadata: Profile;
+  skin?: ProfileSkin;
+};
 ```
 
 Note that a profile may not have skin or cape set — all three fields in `skin` can be absent.
@@ -593,8 +598,8 @@ Request body:
 
 ```typescript
 type Request = {
-    name?: string
-}
+  name?: string;
+};
 ```
 
 Response:

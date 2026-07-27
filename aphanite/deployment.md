@@ -10,6 +10,7 @@ In theory, once you put Aphanite in its own folder and grant execution permissio
 However, since Aphanite itself does not implement TLS[^1], and Minecraft requires Yggdrasil servers to implement TLS, you need a reverse proxy[^2] to provide TLS externally.
 
 [^1]: TLS, simply put, is what turns HTTP into HTTPS. Here's [an article from Cloudflare](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/) that explains this technology in simple terms.
+
 [^2]: Here's [an article from Cloudflare](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/) that explains what a reverse proxy is.
 
 Additionally, since all players including the server owner need direct access to Aphanite, if it's running on a local machine, you'll need a tunneling service[^3] to make it accessible from the outside.
@@ -70,9 +71,11 @@ The following uses Cloudflare Quick Tunnels. It assigns a random new domain each
 
 1. [Download and install `cloudflared`](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/).
 2. Run:
-  ```bash
-  cloudflared tunnel --url http://localhost:3000
-  ```
+
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
 3. Copy the output domain.
 4. Set it as `service.domain` in your config file. (See [Configuration](/aphanite/configuration))
 5. Start Aphanite.
@@ -96,6 +99,7 @@ This section is intended for experienced operators. In short:
 
 1. Obtain an SSL certificate. Use [Certbot](https://certbot.eff.org/) or [acme.sh](https://github.com/acmesh-official/acme.sh).
 2. Configure the reverse proxy. Here's a sample Nginx reverse proxy configuration for reference.
+
 ```nginx {24}
 server {
   listen 443 ssl;
@@ -104,7 +108,7 @@ server {
   listen 443 quic;
   listen [::]:443 quic;
   http3 on;
-  
+
   server_name aphanite.yourdomain.com;
 
   ssl_certificate "/etc/letsencrypt/live/yourdomain.com/fullchain.pem";
@@ -118,7 +122,7 @@ server {
 
   # Load configuration files for the default server block.
   include /etc/nginx/default.d/*.conf;
-  
+
   location / {
     proxy_pass http://127.0.0.1:3000/; # Change this to Aphanite's local listening address.
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -126,6 +130,7 @@ server {
   }
 }
 ```
+
 3. `nginx -t && nginx -s reload`.
 
 Alternatively, server management panels like aaPanel or CyberPanel provide one-click reverse proxy configuration — if you have one installed, refer to their documentation.

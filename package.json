@@ -4,10 +4,13 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
-  "devDependencies": {
-    "vitepress": "^1.6.4"
-  },
   "dependencies": {
+    "@cloudflare/ai-search-snippet": "^0.0.42",
     "markdown-it-footnote": "^4.0.0"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.60.0",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-llms": "^1.13.3"
   }
 }

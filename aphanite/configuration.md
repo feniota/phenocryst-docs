@@ -207,7 +207,7 @@ Tells Minecraft from which domains textures can be obtained.
 
 - Accepts: An array of strings, each entry is a domain name.
 - For local storage, this can be left empty.
-- For S3 storage, this should typically be `<your-bucket-name>.<api-endpoint>`. *This varies by provider, no guarantee of correctness*.
+- For S3 storage, this should typically be `<your-bucket-name>.<api-endpoint>`. _This varies by provider, no guarantee of correctness_.
 
 ## `database` Section
 

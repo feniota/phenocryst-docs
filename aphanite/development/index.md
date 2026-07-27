@@ -1,5 +1,5 @@
 ---
-prev: 
+prev:
   text: "Aphanite User Documentation"
   link: "/aphanite/"
 ---

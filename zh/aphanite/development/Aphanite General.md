@@ -14,22 +14,24 @@ Aphanite 系统中 Yggdrasil 和 Phenocryst 两者共享的部分称为 General�
 
 1. 请求和返回的报文均应为 JSON 格式，并正确包含 `Content-Type: application/json` 头部。
 2. 无论请求是否成功，服务器都以下面的格式响应：
-    ```typescript
-    type Response<Payload> = {
-      success: boolean; // 该操作是否成功
-      payload?: Payload; // 若操作成功，服务器响应的实际数据。
-      reason?: string; // 若操作失败，人类可读的错误原因。
-    };
+   ```typescript
+   type Response<Payload> = {
+     success: boolean; // 该操作是否成功
+     payload?: Payload; // 若操作成功，服务器响应的实际数据。
+     reason?: string; // 若操作失败，人类可读的错误原因。
+   };
 
-    // 或者，更具体地
-    type Response<Payload> = {
-      success: true;
-      payload: Payload;
-    } | {
-      success: false;
-      reason: string;
-    };
-    ```
+   // 或者，更具体地
+   type Response<Payload> =
+     | {
+         success: true;
+         payload: Payload;
+       }
+     | {
+         success: false;
+         reason: string;
+       };
+   ```
    若请求发生错误，应该正确指定 HTTP 状态码，但 `reason` 的内容应是引发错误的真实原因，不一定要和 Reason Phrase 契合。
    `payload` 的类型不做限制，可以是任何 JSON 可以表达的类型（具体由业务 API 而定），但不能为空。如果实在没有什么返回的可以使用
    `204 No Content`。下面所说的所有回复体类型都视为这里名为 `Payload` 的泛型参数的内容。
@@ -42,31 +44,31 @@ Aphanite 系统中 Yggdrasil 和 Phenocryst 两者共享的部分称为 General�
 ```typescript
 // 用户的元信息
 type User = {
-    id: string; // 用户的 UUID
-    name: string; // 用户的名称，注意该字段非唯一
-    email: string; // 用户的邮箱
-    permissions: Permission[]; // 用户的权限
+  id: string; // 用户的 UUID
+  name: string; // 用户的名称，注意该字段非唯一
+  email: string; // 用户的邮箱
+  permissions: Permission[]; // 用户的权限
 };
 
 // 用户的权限。在内部是用数字的比特位存储的，但是序列化时会转换成枚举数组，
 // 对于客户端来说只需要把这个枚举解析出来就可以了。
 const enum Permission {
-    Management = "management",
+  Management = "management",
 }
 
 // 玩家角色的元数据
 type Profile = {
-    id: string; // 该玩家角色的 UUID；
-    name: string; // 该玩家角色的游戏内名称。**只能为 ASCII 字符串**
-    owner: string; // 该玩家角色所属的 Aphanite 用户的 UUID；
+  id: string; // 该玩家角色的 UUID；
+  name: string; // 该玩家角色的游戏内名称。**只能为 ASCII 字符串**
+  owner: string; // 该玩家角色所属的 Aphanite 用户的 UUID；
 };
 
 // 玩家皮肤的数据
 type ProfileSkin = {
-    skin?: string; // 皮肤的 URL
-    model?: "default" | "slim"; // 手臂粗细
-    cape?: string; // 披风的 URL
-}
+  skin?: string; // 皮肤的 URL
+  model?: "default" | "slim"; // 手臂粗细
+  cape?: string; // 披风的 URL
+};
 ```
 
 ## 鉴权
@@ -91,11 +93,13 @@ POST /auth/login
 
 ```typescript
 type Request = {
-    email: string; // 账户邮箱
-    password?: string; // 账户密码（明文）
-    otp_token?: string; // OTP 挑战结果
-}
+  email: string; // 账户邮箱
+  password?: string; // 账户密码（明文）
+  otp_token?: string; // OTP 挑战结果
+};
 ```
+
+`password` 和 `otp_token` 至少需要提供一项；如果两者均提供，`password` 优先。
 
 其中 `otp_token` 的值和获取方式见 [OTP 验证](#otp)。
 
@@ -108,11 +112,15 @@ type Request = {
 
 ```typescript
 type Payload = {
-    access_token: string;
-    client_token: string;
-    user: User;
-}
+  access_token: string;
+  client_token: string;
+  user: User;
+};
 ```
+
+- 若 `password` 和 `otp_token` 均为空，返回 `400 Bad Request`。
+- 若凭证校验失败，返回 `403 Forbidden`。
+- 若请求频率过高，返回 `429 Too Many Requests`。
 
 注意，Client Token 仅在 Yggdrasil API 的特殊情形中使用。我们约定，在 Aphanite General 和 Phenocryst
 中忽略它的存在。不过，启动器仍然应该存储它，以备不时之需。
@@ -132,9 +140,9 @@ POST /auth/refresh
 
 ```typescript
 type Payload = {
-    access_token: string; // 新的 Access Token
-    user: User; // 令牌对应的用户的信息；注意，启动器应该将这里返回的信息填入本地存储——如果用户有修改自己的信息就能派上用场
-}
+  access_token: string; // 新的 Access Token
+  user: User; // 令牌对应的用户的信息；注意，启动器应该将这里返回的信息填入本地存储——如果用户有修改自己的信息就能派上用场
+};
 ```
 
 Client Token 在刷新令牌后保持不变；服务端就不再返回了。
@@ -195,9 +203,9 @@ POST /verification
 
 ```typescript
 type Request = {
-    email: string;
-    method: string;
-}
+  email: string;
+  method: string;
+};
 ```
 
 截止 Aphanite v0.1.0，`method` 仅支持 `totp`。
@@ -206,8 +214,8 @@ type Request = {
 
 ```typescript
 type Payload = {
-    id: string;
-}
+  id: string;
+};
 ```
 
 - 如果用户没有 [TOTP 私钥](#new-totp-privkey)，则返回 `400 Bad Request`。
@@ -222,16 +230,16 @@ POST /verification/{id}
 
 ```typescript
 type Request = {
-    code: string; // OTP 验证码
-}
+  code: string; // OTP 验证码
+};
 ```
 
 返回体：
 
 ```typescript
 type Payload = {
-    otp_token: string;
-}
+  otp_token: string;
+};
 ```
 
 - 如果指定的 OTP Session ID 不存在，则返回 `404 Not Found`。
@@ -264,6 +272,23 @@ type Payload = User;
 - 如果请求 `/users/{id}` 且 `id` 不是当前用户，则检查当前用户是否具有 Management 权限，有则正常返回；
 - 如果请求不包含鉴权信息或鉴权错误，返回 `401 Unauthorized`。
 
+### 按邮箱查询用户 <Badge type="danger" text="需要鉴权 (管理员)" />
+
+```http
+GET /users/by-email/{email}
+```
+
+允许管理员通过邮箱地址查找用户。
+
+返回体：
+
+```typescript
+type Payload = User;
+```
+
+- 需要 Management 权限；否则返回 `403 Forbidden`。
+- 如果邮箱不匹配任何用户，返回 `404 Not Found`。
+
 ### 修改用户元信息 <Badge type="tip" text="需要鉴权" />
 
 ```http
@@ -275,9 +300,9 @@ PATCH /users/me
 
 ```typescript
 type Request = {
-    name?: string;
-    email?: string;
-}
+  name?: string;
+  email?: string;
+};
 ```
 
 返回体：
@@ -301,10 +326,10 @@ PATCH /users/me/credentials/password
 
 ```typescript
 type Request = {
-    old_password?: string;
-    otp_token?: string;
-    new_password: string;
-}
+  old_password?: string;
+  otp_token?: string;
+  new_password: string;
+};
 ```
 
 如果成功，返回 `204 No Content`。
@@ -312,15 +337,15 @@ type Request = {
 权限鉴定：
 
 - 如果未携带有效鉴权信息:
-    - 不能请求省略 ID 的端点；
-    - 应指定 `otp_token` 或 `old_password`。
+  - 不能请求省略 ID 的端点；
+  - 应指定 `otp_token` 或 `old_password`。
 - 如果携带了有效鉴权信息：
-    - 可以省略 `otp_token` 和 `old_password`；
-    - 其他限制和[查询用户信息](#查询用户信息)相同。
+  - 可以省略 `otp_token` 和 `old_password`；
+  - 其他限制和[查询用户信息](#查询用户信息)相同。
 
 `otp_token` 的含义和获取方式见 [OTP 验证](#otp)。
 
-### 颁发或旋转用户的 TOTP 私钥 <Badge type="tip" text="需要鉴权" /> {#new-totp-privkey} 
+### 颁发或旋转用户的 TOTP 私钥 <Badge type="tip" text="需要鉴权" /> {#new-totp-privkey}
 
 新颁发或刚刚旋转的 TOTP 密钥应该被用户妥善保存，创建后应该完成一次验证确保可用。
 
@@ -336,9 +361,9 @@ POST /users/me/credentials/totp
 
 ```typescript
 type Payload = {
-    secret: string; // TOTP 私钥
-    otpauth_url: string; // otpauth:// 格式的私钥 URL
-}
+  secret: string; // TOTP 私钥
+  otpauth_url: string; // otpauth:// 格式的私钥 URL
+};
 ```
 
 请求成功后，原有的 TOTP 密钥立即失效，Phanerite 需要将新密钥存储下来。
@@ -365,10 +390,10 @@ POST /user
 
 ```typescript
 type Request = {
-    email: string;
-    name?: string; // 未指定则使用邮箱
-    permissions: Permission[];
-}
+  email: string;
+  name?: string; // 未指定则使用邮箱
+  permissions: Permission[];
+};
 ```
 
 返回体：
@@ -402,9 +427,9 @@ GET /turnstile
 返回体：
 
 ```typescript
-type Payload={
-  site_key:string;
-}
+type Payload = {
+  site_key: string;
+};
 ```
 
 - 如果服务器没有启用公开注册，返回 `403 Forbidden`；
@@ -427,15 +452,15 @@ POST /register/session
 请求体：
 
 ```typescript
-type Payload = {
+type Request = {
   expires_after: number; // 该注册 Token 的过期时间，单位为分钟，最大 10080min（7 天）
-}
+};
 ```
 
 返回体：
 
 ```typescript
-type Payload={
+type Payload = {
   token: string;
 };
 ```
@@ -451,19 +476,19 @@ POST /register
 请求体：
 
 ```typescript
-type Request={
-  register_token?:string;
-  turnstile_token?:string;
-  email:string;
-  name?:string; // 如果没有指定，则设置为邮箱。应不超过 20 字符。
-  password:string; // 应介于 8 字符和 128 字符之间。
-}
+type Request = {
+  register_token?: string;
+  turnstile_token?: string;
+  email: string;
+  name?: string; // 如果没有指定，则设置为邮箱。应介于 1 到 20 字符之间。
+  password: string; // 应介于 8 字符和 128 字符之间。
+};
 ```
 
 返回体：
 
 ```typescript
-type Payload=User;
+type Payload = User;
 ```
 
 - 若服务器启用了公开注册：
@@ -477,8 +502,8 @@ type Payload=User;
   - 若没有提供注册 Token（忽略 Turnstile Token），返回 `400 Bad Request`。
   - 若提供了注册 Token，但验证失败，返回 `403 Forbidden`。
 - 若邮箱与已有用户冲突，返回 `409 Conflict`。
-- 若昵称和密码未通过长度检查，返回 `418 I'm a Teapot`。
-
+- 若昵称不符合长度要求（1–20 字符），返回 `418 I'm a Teapot`。
+- 若密码不符合长度要求（8–128 字符），返回 `422 Unprocessable Content`。
 
 ## Profile 系统
 
@@ -523,8 +548,8 @@ POST /profile
 
 ```typescript
 type Request = {
-    name: string;
-}
+  name: string;
+};
 ```
 
 返回体：
@@ -547,8 +572,8 @@ type Payload = Profile;
 
 - 如果目标 Profile 不存在，返回 `404 Not Found`。
 - 如果目标 Profile 存在，但不属于当前用户：
-    - 若当前用户有 Management 权限，成功。
-    - 否则，返回 `403 Forbidden`。
+  - 若当前用户有 Management 权限，成功。
+  - 否则，返回 `403 Forbidden`。
 
 ### 获取 Profile 信息 {#get-profile}
 
@@ -564,13 +589,12 @@ GET /profiles/{id}?with_skin={bool}
 
 ```typescript
 type Payload = {
-    metadata: Profile;
-    skin?: ProfileSkin;
-}
+  metadata: Profile;
+  skin?: ProfileSkin;
+};
 ```
 
 注意，Profile 不一定设置了皮肤，也不一定设置了披风，`skin` 的三个字段有可能均为空。
-
 
 ### 修改 Profile 元信息 <Badge type="tip" text="需要鉴权" />
 
@@ -582,8 +606,8 @@ PATCH /profiles/{id}
 
 ```typescript
 type Request = {
-    name?: string
-}
+  name?: string;
+};
 ```
 
 返回体
@@ -601,7 +625,7 @@ type Payload = Profile;
 
 若要修改的玩家名称未能满足这些要求，返回 `400 Bad Request`。
 
-### 修改皮肤  <Badge type="tip" text="需要鉴权" />
+### 修改皮肤 <Badge type="tip" text="需要鉴权" />
 
 ```http
 PUT <aphanite_base_url>/api/yggdrasil/api/user/profile/{uuid}/{textureType}

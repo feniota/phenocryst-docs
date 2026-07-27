@@ -14,13 +14,13 @@ Aphanite 使用[我们用 WebGPU 编写的超轻量 3D 皮肤预览器](https://
 
 下面只是概况，具体请参考 [MDN 文档中的兼容性表格](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGPU_API#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7)。
 
-| **浏览器** | **支持状态** |
-|--------|----------|
-| Chromium 113+ (Windows/macOS) | 完全支持 |
-| Chromium 144+ (Linux) | 非 Intel 12 代以上 GPU 的设备需手动开启 |
-| Firefox 147+ | Intel Mac 和 Linux 需手动开启 |
-| Firefox (Android) | 不支持 |
-| 其余手机浏览器 | 完全支持 |
+| **浏览器**                    | **支持状态**                            |
+| ----------------------------- | --------------------------------------- |
+| Chromium 113+ (Windows/macOS) | 完全支持                                |
+| Chromium 144+ (Linux)         | 非 Intel 12 代以上 GPU 的设备需手动开启 |
+| Firefox 147+                  | Intel Mac 和 Linux 需手动开启           |
+| Firefox (Android)             | 不支持                                  |
+| 其余手机浏览器                | 完全支持                                |
 
 #### 看样子我的浏览器支持，但它仍然报错？
 

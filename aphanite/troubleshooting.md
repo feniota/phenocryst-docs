@@ -14,13 +14,13 @@ However, WebGPU is a relatively new and low-level API. Even though nearly 9 year
 
 The table below provides a general overview. For details, please refer to the [compatibility table in MDN documentation](https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API#browser_compatibility).
 
-| **Browser** | **Support Status** |
-|-------------|-------------------|
-| Chromium 113+ (Windows/macOS) | Fully supported |
-| Chromium 144+ (Linux) | Requires manual enablement on GPUs older than Intel 12th Gen |
-| Firefox 147+ |  Requires manual enablement on Intel Mac and Linux |
-| Firefox (Android) | Not supported |
-| Other mobile browsers | Fully supported |
+| **Browser**                   | **Support Status**                                           |
+| ----------------------------- | ------------------------------------------------------------ |
+| Chromium 113+ (Windows/macOS) | Fully supported                                              |
+| Chromium 144+ (Linux)         | Requires manual enablement on GPUs older than Intel 12th Gen |
+| Firefox 147+                  | Requires manual enablement on Intel Mac and Linux            |
+| Firefox (Android)             | Not supported                                                |
+| Other mobile browsers         | Fully supported                                              |
 
 #### My browser is supported, but I still get an error?
 

@@ -10,6 +10,7 @@ next: false
 然而，因为 Aphanite 自身并没有实现 TLS[^1]，同时 Minecraft 强制要求 Yggdrasil 服务器实现 TLS，因此需要借助反向代理[^2]来实现“外置”的 TLS。
 
 [^1]: TLS，简单来说，就是让 HTTP 变成 HTTPS 的东西。这有篇[来自 Cloudflare 的文章](https://www.cloudflare.com/zh-cn/learning/ssl/transport-layer-security-tls/)简单讲述了这项技术。
+
 [^2]: 这里有一篇[来自 Cloudflare 的文章](https://www.cloudflare.com/zh-cn/learning/cdn/glossary/reverse-proxy/)简单讲解了什么是反向代理。
 
 同时，因为 Aphanite 需要所有玩家包括服主都能直接访问到，对于运行在本地电脑上的 Aphanite，这又需要配置内网穿透[^3]才能让外界访问。
@@ -85,9 +86,11 @@ next: false
 
 1. [下载并安装 `cloudflared`](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/)。
 2. 运行：
-  ```bash
-  cloudflared tunnel --url http://localhost:3000
-  ```
+
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
 3. 复制输出的域名。
 4. 将输出的域名填入配置文件中 `service.domain` 里。（具体见[配置](/zh/aphanite/configuration)）
 5. 启动 Aphanite。
@@ -103,6 +106,7 @@ next: false
 
 1. 获取 SSL 证书。可以使用 [Certbot](https://certbot.eff.org/) 或 [acme.sh](https://github.com/acmesh-official/acme.sh)。
 2. 配置反向代理。下面是示例的 Nginx 反向代理配置块，以供参考。
+
 ```nginx {24}
 server {
   listen 443 ssl;
@@ -111,7 +115,7 @@ server {
   listen 443 quic;
   listen [::]:443 quic;
   http3 on;
-  
+
   server_name aphanite.yourdomain.com;
 
   ssl_certificate "/etc/letsencrypt/live/yourdomain.com/fullchain.pem";
@@ -125,7 +129,7 @@ server {
 
   # Load configuration files for the default server block.
   include /etc/nginx/default.d/*.conf;
-  
+
   location / {
     proxy_pass http://127.0.0.1:3000/; # 记得将这个修改成 Aphanite 的本地监听地址。
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -133,6 +137,7 @@ server {
   }
 }
 ```
+
 3. `nginx -t && nginx -s reload`。
 
 或者，如[宝塔面板](https://www.bt.cn/new/index.html)之类的服务器管理软件提供了一键配置反向代理的功能，如果你安装了，可以参考它们的文档。
