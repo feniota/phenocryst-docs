@@ -1,5 +1,5 @@
 ---
-description: "Phenocryst is a pair of server (Aphanite) and client (Phanerite) for private modded Minecraft servers."
+description: "Phenocryst is a pair of server (Aphanite) and client (Phanerite) for private modded Minecraft servers, with a mirror service (Granodiorite) for accelerated game downloads."
 ---
 
 # Phenocryst
@@ -8,14 +8,13 @@ description: "Phenocryst is a pair of server (Aphanite) and client (Phanerite) f
 >
 > _— [Wikipedia](https://en.wikipedia.org/wiki/Phenocryst)_
 
-Phenocryst is a pair of server ([Aphanite](/aphanite/)) and client ([Phanerite](/phanerite/)), aiming to provide an one-click-to-launch experience for private modded Minecraft servers.
-
-In detail, it consists of
+Phenocryst consists of:
 
 - **[Aphanite](/aphanite/)**: A self-deployable [Yggdrasil](https://minecraft.wiki/w/Yggdrasil) server, with extra features explicitly designed for private servers.
 - **[Phanerite](/phanerite/)**: A preconfigure-able Minecraft launcher, which connects to and is managed by an Aphanite server.
+- **[Granodiorite](/granodiorite/)**: A Minecraft resource mirror that caches game assets in Cloudflare R2 for faster downloads, primarily serving Phanerite users.
 
-A well-configured Phenocryst system, in pairs, should make server owners able to manage players' game instances in a cluster-ish and convenient way.
+A well-configured Phenocryst system should make server owners able to manage players' game instances in a cluster-ish and convenient way.
 
 On the other hand, players are also able to install and launch the game, and join the server in one click with a preconfigured Phanerite launcher.
 

@@ -1,3 +1,9 @@
+#VPContent > div > div > div.content {
+  padding-bottom: 64px;
+}
+
+/* -------------- Cloudflare AI Search ----------------- */
+
 /* Hide VP's empty search div (no search provider configured).
    It would otherwise take up flex-grow: 1 space in the navbar. */
 .VPNavBarSearch {

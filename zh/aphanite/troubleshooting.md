@@ -6,7 +6,7 @@ description: "使用 Aphanite 时常见的问题和解决方法。"
 
 ## WebGPU 不可用，无法加载 3D 皮肤预览。 {#webgpu-not-available}
 
-Aphanite 使用[我们用 WebGPU 编写的超轻量 3D 皮肤预览器](https://github.com/feniota/tiny-skin-viewer)来渲染 3D 皮肤预览。得益于我们直接和 WebGPU API 与 WGSL 着色器交互，该库在您浏览器中仅会带来约 13KB 的加载负载。
+Aphanite 使用[我们用 WebGPU 编写的超轻量 3D 皮肤预览器](https://github.com/feniota/tiny-skin-viewer)来渲染 3D 皮肤预览。得益于我们直接和 WebGPU API 与 WGSL 着色器交互，该库在您浏览器中仅会带来约 20KB 的加载负载。
 
 ### WebGPU 是什么？
 

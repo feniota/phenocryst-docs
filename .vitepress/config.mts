@@ -11,21 +11,12 @@ export default defineConfig({
   // sitemap for AI Search crawler
   // Auto-inject AI Search-compatible meta tags for every page
   transformPageData(pageData) {
-    const title =
-      pageData.frontmatter.layout === "home"
-        ? "Phenocryst Docs"
-        : pageData.title;
+    const title = pageData.frontmatter.layout === "home" ? "Phenocryst Docs" : pageData.title;
 
     pageData.frontmatter.head ??= [];
     // AI Search picks up title from <meta name="title"> or <meta property="og:title">
-    pageData.frontmatter.head.push([
-      "meta",
-      { name: "title", content: title },
-    ]);
-    pageData.frontmatter.head.push([
-      "meta",
-      { property: "og:title", content: title },
-    ]);
+    pageData.frontmatter.head.push(["meta", { name: "title", content: title }]);
+    pageData.frontmatter.head.push(["meta", { property: "og:title", content: title }]);
   },
 
   lastUpdated: true,
@@ -77,6 +68,11 @@ export default defineConfig({
             text: "Phanerite",
             link: "/zh/phanerite/",
             activeMatch: "/phanerite/",
+          },
+          {
+            text: "Granodiorite",
+            link: "/zh/granodiorite/",
+            activeMatch: "/granodiorite/",
           },
         ],
 
@@ -138,11 +134,24 @@ export default defineConfig({
               ],
             },
           ],
+          "/zh/granodiorite/": [
+            {
+              text: "Granodiorite",
+              items: [
+                { text: "介绍", link: "/zh/granodiorite/" },
+                { text: "使用条款", link: "/zh/granodiorite/terms" },
+              ],
+            },
+          ],
         },
       },
     },
   },
   themeConfig: {
+    footer: {
+      message: "msg",
+      copyright: "cr",
+    },
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
@@ -151,6 +160,11 @@ export default defineConfig({
         text: "Phanerite",
         link: "/phanerite/",
         activeMatch: "/phanerite/",
+      },
+      {
+        text: "Granodiorite",
+        link: "/granodiorite/",
+        activeMatch: "/granodiorite/",
       },
     ],
 
@@ -206,6 +220,15 @@ export default defineConfig({
               text: "Yggdrasil API",
               link: "/aphanite/development/Yggdrasil",
             },
+          ],
+        },
+      ],
+      "/granodiorite/": [
+        {
+          text: "Granodiorite",
+          items: [
+            { text: "Introduction", link: "/granodiorite/" },
+            { text: "Terms of Service", link: "/granodiorite/terms" },
           ],
         },
       ],

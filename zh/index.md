@@ -1,5 +1,5 @@
 ---
-description: "Phenocryst 是一个服务器（Aphanite）— 客户端（Phanerite）系统，为 Minecraft 模组私服提供一键启动体验。"
+description: "Phenocryst 是一个服务器（Aphanite）— 客户端（Phanerite）系统，为 Minecraft 模组私服提供一键启动体验；另有镜像服务（Granodiorite）加速游戏下载。"
 ---
 
 # Phenocryst
@@ -8,12 +8,11 @@ description: "Phenocryst 是一个服务器（Aphanite）— 客户端（Phaneri
 >
 > _——[维基百科](https://zh.wikipedia.org/wiki/%E6%96%91%E6%99%B6)_
 
-Phenocryst 是一个服务器（[Aphanite](/zh/aphanite/)）—客户端（[Phanerite](/zh/phanerite/)）系统，目标是为 Minecraft 模组私服玩家提供一键启动的体验。
-
-具体而言，Phenocryst 由以下部分组成：
+Phenocryst 由以下部分组成：
 
 - **[Aphanite](/zh/aphanite/)**：可自部署的 [Yggdrasil](https://minecraft.wiki/w/Yggdrasil) 服务器。除此之外，Aphanite 还带有专为私服设计的功能。
 - **[Phanerite](/zh/phanerite/)**：可预配置的 Minecraft 启动器，可以连接到一个 Aphanite 服务器，并由其控制。
+- **[Granodiorite](/zh/granodiorite/)**：Minecraft 资源镜像，将游戏资源缓存在 Cloudflare R2 中加速国内下载，主要为 Phanerite 用户提供加速服务。
 
 如果成对使用 Aphanite 和 Phanerite，那么配置好的 Phenocryst 系统应该可以让服主可以集群式地、方便地管理各玩家的游戏实例。
 
