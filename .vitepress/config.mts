@@ -109,6 +109,10 @@ export default defineConfig({
                   link: "/zh/aphanite/deployment",
                 },
                 {
+                  text: "变更日志",
+                  link: "/zh/aphanite/changelog",
+                },
+                {
                   text: "开发者文档",
                   link: "/zh/aphanite/development/",
                 },
@@ -199,6 +203,10 @@ export default defineConfig({
             {
               text: "Deployment",
               link: "/aphanite/deployment",
+            },
+            {
+              text: "Changelog",
+              link: "/aphanite/changelog",
             },
             {
               text: "Developer Docs",

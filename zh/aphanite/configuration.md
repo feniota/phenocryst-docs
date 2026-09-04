@@ -48,7 +48,7 @@ Aphanite 的子目录。
 
 ### `data_path`
 
-Aphanite 存放数据文件的目录，Aphanite 会在这个目录下存放临时文件和 SQLite 数据库。
+Aphanite 存放数据文件的目录，Aphanite 会在这个目录下存放临时文件和 Turso 数据库。
 
 - 接受的内容：任意文件系统路径（绝对或相对）。
 - 默认值：`./data`。
@@ -218,13 +218,25 @@ S3 秘密访问密钥。
 
 数据库后端类型。
 
-- 接受的内容：`sqlite` 或 `postgres`。
-- 默认值：`sqlite`。
-- 除非有特殊需求，否则建议保持使用 `sqlite`。
+- 接受的内容：`turso` 或 `postgres`。
+- 默认值：`turso`。
+- 除非有特殊需求，否则建议保持使用 `turso`。
+
+> [!WARNING]
+>
+> Aphanite 不再支持旧版 SQLite 后端。如果你正在升级，请先用 `sqlite3` CLI 等工具
+> 在数据库上手动执行：
+>
+> ```sql
+> PRAGMA journal_mode = "wal";
+> PRAGMA wal_checkpoint(truncate);
+> ```
+>
+> 然后将 `backend` 设置为 `"turso"`。
 
 ### `postgres_url`
 
-PostgreSQL 数据库的连接 URL。如果你上面设置的是 `sqlite` 的话请忽略。
+PostgreSQL 数据库的连接 URL。如果你上面设置的是 `turso` 的话请忽略。
 
 - 接受的内容：PostgreSQL 连接字符串。
 - 仅当 `backend` 设置为 `postgres` 时需要填写，例如：`postgresql://user:password@localhost:5432/database`。详细格式请参考 [Toasty 文档](https://tokio-rs.github.io/toasty/0.7.0/guide/postgresql.html)。
@@ -301,7 +313,7 @@ domain = "aphanite.example.com"
 
 # Internal data path.
 #
-# Aphanite will put some files here, notably temporary files and the SQLite database
+# Aphanite will put some files here, notably temporary files and the Turso database
 data_path = './data'
 
 # Whether HTTPS is enabled for Aphanite
@@ -400,8 +412,8 @@ domains = ["your-bucket.s3.amazonaws.com"]
 #
 # Don't change this unless you know what you are doing.
 #
-# Possible values: "sqlite", "postgres"
-backend = "sqlite"
+# Possible values: "turso", "postgres"
+backend = "turso"
 
 # URL to connect your PostgreSQL database
 #

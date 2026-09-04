@@ -48,7 +48,7 @@ A subdirectory path for Aphanite.
 
 ### `data_path`
 
-The directory where Aphanite stores its data files. Aphanite puts temporary files and the SQLite database here.
+The directory where Aphanite stores its data files. Aphanite puts temporary files and the Turso database here.
 
 - Accepts: Any filesystem path (absolute or relative).
 - Default: `./data`.
@@ -218,13 +218,23 @@ Configures the database Aphanite uses.
 
 The database backend type.
 
-- Accepts: `sqlite` or `postgres`.
-- Default: `sqlite`.
-- Unless you have specific needs, it's recommended to stick with `sqlite`.
+- Accepts: `turso` or `postgres`.
+- Default: `turso`.
+- Unless you have specific needs, it's recommended to stick with `turso`.
+
+> [!WARNING]
+>
+> Aphanite no longer supports the legacy SQLite backend. If you are upgrading an existing
+> installation, please manually run
+> ```sql
+> PRAGMA journal_mode = "wal";
+> PRAGMA wal_checkpoint(truncate);
+> ```
+> against the database (e.g. with the `sqlite3` CLI: `sqlite3 path/to/data.db`), then set `backend = "turso"`.
 
 ### `postgres_url`
 
-The PostgreSQL connection URL. Ignore this if you set `backend` to `sqlite`.
+The PostgreSQL connection URL. Ignore this if you set `backend` to `turso`.
 
 - Accepts: A PostgreSQL connection string.
 - Only required when `backend` is set to `postgres`, e.g., `postgresql://user:password@localhost:5432/database`. See [Toasty documentation](https://tokio-rs.github.io/toasty/0.7.0/guide/postgresql.html) for details.
@@ -301,7 +311,7 @@ domain = "aphanite.example.com"
 
 # Internal data path.
 #
-# Aphanite will put some files here, notably temporary files and the SQLite database
+# Aphanite will put some files here, notably temporary files and the Turso database
 data_path = './data'
 
 # Whether HTTPS is enabled for Aphanite
@@ -400,8 +410,8 @@ domains = ["your-bucket.s3.amazonaws.com"]
 #
 # Don't change this unless you know what you are doing.
 #
-# Possible values: "sqlite", "postgres"
-backend = "sqlite"
+# Possible values: "turso", "postgres"
+backend = "turso"
 
 # URL to connect your PostgreSQL database
 #

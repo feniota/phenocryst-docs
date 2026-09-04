@@ -21,7 +21,7 @@ Aphanite is designed to be easy to deploy. However, we also provide a Docker ima
 - Otherwise, we generally recommend [running the binary directly](#binary-usage).
 - If you're already familiar with system service management, you probably have your own preferences — skip to the section that fits.
 
-Note that Aphanite uses SQLite by default and is designed for straightforward deployment. Using Docker usually **won't be much more convenient**. Unless you plan to use PostgreSQL, in which case you might set up a Docker Compose stack or use Kubernetes to cluster Aphanite — but those are beyond the scope of this wiki.
+Note that Aphanite uses Turso (a feature-rich Rust port of SQLite) by default and is designed for straightforward deployment. Using Docker usually **won't be much more convenient**. Unless you plan to use PostgreSQL, in which case you might set up a Docker Compose stack or use Kubernetes to cluster Aphanite — but those are beyond the scope of this wiki.
 
 ## Standalone Binary {#binary-usage}
 

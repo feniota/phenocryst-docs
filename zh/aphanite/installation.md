@@ -21,7 +21,7 @@ Aphanite 自身是被设计为容易部署的。不过，我们也提供可以�
 - 否则，我们通常会推荐[直接运行二进制文件](#binary-usage)。
 - 如果你对系统服务的运维已经比较熟悉了，想必你有自己的看法，那么可以直接跳到你想要的安装方法的小节里。
 
-注意，Aphanite 默认情况下使用 SQLite 数据库，并且被设计为易于直接部署，使用 Docker 镜像通常来说**并不会方便多少**。除非你打算使用 PostgreSQL，那么可以组一个 Docker Compose，或者使用 Kubernetes 搭建你自己的 Aphanite 集群。不过这些不在本 Wiki 的讨论范围内。
+注意，Aphanite 默认情况下使用 Turso 数据库（Rust 版 SQLite），并且被设计为易于直接部署，使用 Docker 镜像通常来说**并不会方便多少**。除非你打算使用 PostgreSQL，那么可以组一个 Docker Compose，或者使用 Kubernetes 搭建你自己的 Aphanite 集群。不过这些不在本 Wiki 的讨论范围内。
 
 ## 直接运行二进制文件 {#binary-usage}
 
