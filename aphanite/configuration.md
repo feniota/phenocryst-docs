@@ -22,6 +22,7 @@ The IP address Aphanite listens on.
 - Accepts: Any valid IP address, e.g. `127.0.0.1`, `fe80::1`.
 - Default: `127.0.0.1`.
 - Unless you have special requirements, stick with `127.0.0.1`.
+- The official Docker image ignores this setting by explicitly passing `--listen 0.0.0.0`, which listens on all network interfaces.
 
 ### `port`
 
@@ -30,6 +31,7 @@ The port Aphanite listens on.
 - Accepts: Any valid port number (≤65535).
 - Default: `3000`.
 - If Aphanite exits with "port already in use", you likely need to change this number.
+- When deploying with the Docker image, do not change this setting to use a different host port. Instead, change the mapping in the startup arguments, such as `-p <host-port>:3000`.
 
 ### `domain`
 
@@ -52,6 +54,7 @@ The directory where Aphanite stores its data files. Aphanite puts temporary file
 
 - Accepts: Any filesystem path (absolute or relative).
 - Default: `./data`.
+- When using the Docker image, do not change this unless you have a strong reason. Aphanite stores data in `/app/data` inside the container by default; instead, mount a host directory to `/app/data` with the `-v` option to change where the data is actually stored.
 
 ### `tls`
 
@@ -85,7 +88,7 @@ Which HTTP header to use for obtaining the client's real IP.
 - Default: `X-Forwarded-For`.
 - The value depends on which reverse proxy service you're using.
 
-In most cases, `X-Forwarded-For` works fine. **Do not change this lightly**.
+In most cases, `X-Forwarded-For` or `disabled` works fine. **Do not change this lightly**.
 
 ### `public`
 
@@ -147,6 +150,7 @@ The filesystem path for storing files.
 
 - Accepts: Any filesystem path (absolute or relative).
 - Default: `./data/assets`.
+- As with the setting above, do not change this lightly when using a Docker container.
 
 ### `storage.s3` {#s3}
 
@@ -238,6 +242,7 @@ The PostgreSQL connection URL. Ignore this if you set `backend` to `turso`.
 
 - Accepts: A PostgreSQL connection string.
 - Only required when `backend` is set to `postgres`, e.g., `postgresql://user:password@localhost:5432/database`. See [Toasty documentation](https://tokio-rs.github.io/toasty/0.7.0/guide/postgresql.html) for details.
+- When deploying with the Docker image, make sure the database backend is accessible from the Aphanite container.
 
 ## `yggdrasil` Section
 
@@ -282,7 +287,8 @@ The registration page URL of this Yggdrasil server.
 
 Below is the built-in example configuration file that this article is based on.
 
-Commit: <a href="https://github.com/feniota/aphanite/commit/8ddd42a1738ca6d0b74763eca3fd0f53602c0ca8"><Badge type="tip" text="8ddd42a" /></a>
+
+Commit: <a href="https://github.com/feniota/aphanite/commit/2eaf86b96dff8bdbbf65ccc510e00a611e99e059"><Badge type="tip" text="2eaf86b" /></a>
 
 ```toml
 # Aphanite configuration file
@@ -294,8 +300,7 @@ Commit: <a href="https://github.com/feniota/aphanite/commit/8ddd42a1738ca6d0b747
 # IP to listen on
 listen = "{APHANITE_CONFIG_LISTEN}"
 
-# Port to listen on
-port = {APHANITE_CONFIG_PORT}
+port = {APHANITE_CONFIG_PORT}# Port to listen on
 
 # Domain of this server
 domain = "aphanite.example.com"
@@ -314,13 +319,12 @@ domain = "aphanite.example.com"
 # Aphanite will put some files here, notably temporary files and the Turso database
 data_path = './data'
 
-# Whether HTTPS is enabled for Aphanite
+tls = {APHANITE_CONFIG_TLS_ENABLED}# Whether HTTPS is enabled for Aphanite
 #
 # Aphanite itself does NOT provide TLS functionality. One should use a reverse proxy
 # to implement that, otherwise Minecraft would NOT trust the server. Still, this is
 # good for testing. Aphanite uses this to indicate if `https` should be used in
 # generated file URLs.
-tls = {APHANITE_CONFIG_TLS_ENABLED}
 
 # How could Aphanite get the actual client IP
 #
@@ -416,7 +420,7 @@ backend = "turso"
 # URL to connect your PostgreSQL database
 #
 # See https://tokio-rs.github.io/toasty/0.7.0/guide/postgresql.html for more details.
-postgres_url = "******localhost:5432/mydb"
+postgres_url = "postgresql://user:pass@localhost:5432/mydb"
 
 # Configuration related to the Yggdrasil service
 [yggdrasil]

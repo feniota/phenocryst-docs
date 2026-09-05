@@ -21,7 +21,8 @@ Aphanite 监听的 IP 地址。
 
 - 接受的内容：任意合法的 IP 地址，如 `127.0.0.1`、`fe80::1`。
 - 默认值：`127.0.0.1`。
-- 无特殊需求，使用 `127.0.0.1` 就好。
+- 如果无特殊需求，使用 `127.0.0.1` 就好。
+- 官方 Docker 镜像中的 Aphanite 会通过显式指定 `--listen 0.0.0.0` 忽略该配置，固定监听在 `0.0.0.0`（即所有网卡）上。
 
 ### `port`
 
@@ -30,6 +31,7 @@ Aphanite 监听的端口。
 - 接受的内容：任意合法（≤65535）的端口号。
 - 默认值：`3000`。
 - 如果 Aphanite 启动时报错“port already in use”并退出，那么你很可能需要换一个数字。
+- 对于使用 Docker 镜像部署的方案，如果你想要在宿主机上让 Aphanite 监听到其他端口，那么请不要修改这里的配置，而是通过修改启动参数中的 `-p <宿主机端口>:3000` 来更改映射端口。
 
 ### `domain`
 
@@ -52,6 +54,7 @@ Aphanite 存放数据文件的目录，Aphanite 会在这个目录下存放临�
 
 - 接受的内容：任意文件系统路径（绝对或相对）。
 - 默认值：`./data`。
+- 对于 Docker 镜像，除非有充分的理由请勿修改，Aphanite 默认会把数据放到容器内的 `/app/data` 目录。你更应该修改 `-v` 参数挂载宿主机目录到容器内的 `/app/data` 来修改数据实际的存放位置。
 
 ### `tls`
 
@@ -85,7 +88,7 @@ Aphanite 存放数据文件的目录，Aphanite 会在这个目录下存放临�
 - 默认值：`X-Forwarded-For`。
 - 这个值取决于你使用的反向代理服务。
 
-大多数情况下都可以直接使用 `X-Forwarded-For`。**请不要轻易修改**。
+大多数情况下都可以直接使用 `X-Forwarded-For` 或 `disabled`。**请不要轻易修改**。
 
 ### `public`
 
@@ -147,6 +150,7 @@ Cloudflare Turnstile 秘密密钥。
 
 - 接受的内容：任意文件系统路径（绝对或相对）。
 - 默认值：`./data/assets`。
+- 同上，对于 Docker 容器请勿轻易修改。
 
 ### `storage.s3` {#s3}
 
@@ -224,7 +228,7 @@ S3 秘密访问密钥。
 
 > [!WARNING]
 >
-> Aphanite 不再支持旧版 SQLite 后端。如果你正在升级，请先用 `sqlite3` CLI 等工具
+> Aphanite 不再支持旧版 SQLite 后端。如果你正在升级，请使用 `sqlite3` CLI 等工具
 > 在数据库上手动执行：
 >
 > ```sql
@@ -240,6 +244,7 @@ PostgreSQL 数据库的连接 URL。如果你上面设置的是 `turso` 的话�
 
 - 接受的内容：PostgreSQL 连接字符串。
 - 仅当 `backend` 设置为 `postgres` 时需要填写，例如：`postgresql://user:password@localhost:5432/database`。详细格式请参考 [Toasty 文档](https://tokio-rs.github.io/toasty/0.7.0/guide/postgresql.html)。
+- 如果你使用 Docker 镜像部署，请确保该数据库后端能被 Aphanite 的容器访问到。
 
 ## `yggdrasil` 小节
 
@@ -284,7 +289,7 @@ PostgreSQL 数据库的连接 URL。如果你上面设置的是 `turso` 的话�
 
 下面是 Aphanite 内置的示例配置文件，本文也基于它编写。
 
-Commit: <a href="https://github.com/feniota/aphanite/commit/8ddd42a1738ca6d0b74763eca3fd0f53602c0ca8"><Badge type="tip" text="8ddd42a" /></a>
+Commit: <a href="https://github.com/feniota/aphanite/commit/2eaf86b96dff8bdbbf65ccc510e00a611e99e059"><Badge type="tip" text="2eaf86b" /></a>
 
 ```toml
 # Aphanite configuration file
@@ -296,8 +301,7 @@ Commit: <a href="https://github.com/feniota/aphanite/commit/8ddd42a1738ca6d0b747
 # IP to listen on
 listen = "{APHANITE_CONFIG_LISTEN}"
 
-# Port to listen on
-port = {APHANITE_CONFIG_PORT}
+port = {APHANITE_CONFIG_PORT}# Port to listen on
 
 # Domain of this server
 domain = "aphanite.example.com"
@@ -316,13 +320,12 @@ domain = "aphanite.example.com"
 # Aphanite will put some files here, notably temporary files and the Turso database
 data_path = './data'
 
-# Whether HTTPS is enabled for Aphanite
+tls = {APHANITE_CONFIG_TLS_ENABLED}# Whether HTTPS is enabled for Aphanite
 #
 # Aphanite itself does NOT provide TLS functionality. One should use a reverse proxy
 # to implement that, otherwise Minecraft would NOT trust the server. Still, this is
 # good for testing. Aphanite uses this to indicate if `https` should be used in
 # generated file URLs.
-tls = {APHANITE_CONFIG_TLS_ENABLED}
 
 # How could Aphanite get the actual client IP
 #

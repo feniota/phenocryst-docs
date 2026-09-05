@@ -30,6 +30,5 @@ PRAGMA wal_checkpoint(truncate);
 ```
 .exit
 ```
-4. Check whether the files `db.sqlite.wal` and `db.sqlite.shm` appear in the same directory as the database. If they do, the database format migration is complete.
-5. Update the configuration file by changing the `database.backend` field from `sqlite` to `turso`.
-6. Replace the Aphanite binary to complete the migration.
+4. Update the configuration file by changing the `database.backend` field from `sqlite` to `turso`.
+5. Replace the Aphanite binary to complete the migration.

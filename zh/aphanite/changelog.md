@@ -30,6 +30,5 @@ PRAGMA wal_checkpoint(truncate);
 ```
 .exit
 ```
-4. 检查数据库同级目录下是否出现 `db.sqlite.wal` 和 `db.sqlite.shm` 文件，若出现则数据库格式迁移完成。
-5. 更改配置文件，将 `database.backend` 字段从 `sqlite` 改为 `turso`。
-6. 替换 Aphanite 二进制文件，完成迁移。
+4. 更改配置文件，将 `database.backend` 字段从 `sqlite` 改为 `turso`。
+5. 替换 Aphanite 二进制文件，完成迁移。

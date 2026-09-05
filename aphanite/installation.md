@@ -105,4 +105,44 @@ Next, head to [Initialize Configuration](#init).
 
 ## Using Docker {#docker}
 
-Coming soon!
+Official Docker images are available as [`quay.io/feniota/aphanite`](https://quay.io/repository/feniota/aphanite?tab=tags).
+
+These images are layered on top of `quay.io/fedora/fedora-minimal:45`, and are about 70MB (compressed) or 180MB (uncompressed) in size. Fedora is known for its aggressive acceptance of new library versions, so the container might not run if your kernel is old enough. If you encounter issues, please try the standalone binary (musl libc version).
+
+You can pull the image with:
+
+```bash
+podman pull quay.io/feniota/aphanite:latest
+# or
+docker pull quay.io/feniota/aphanite:latest
+```
+
+Each release is tagged with the corresponding version number, e.g., `quay.io/feniota/aphanite:v0.1.0`.
+
+To deploy Aphanite with Docker, (or similar container hosts), you should first create a directory to store the configuration and database.
+Let's assume the directory is `~/.aphanite`.
+Then run the following command to start the container: 
+
+```bash{5}
+mkdir -p ~/.aphanite
+podman run -d \ # or docker
+  --name aphanite \
+  --restart unless-stopped \
+  -p 3000:3000 \ # please change the former 3000 if you want to use a different port
+  -v "~/.aphanite:/app:Z" \
+  quay.io/feniota/aphanite:latest
+```
+
+Next, please edit `~/.aphanite/config.toml` before exposing the service publicly. Refer to [Configuration](/aphanite/configuration) chapter.
+
+### Building the Docker Image Yourself
+
+If you don't want to use that, you can build the image yourself. Clone the repository and run:
+
+```bash
+podman build -t aphanite:latest .
+# or
+docker build -t aphanite:latest .
+```
+
+You can always customize Dockerfile to your liking. But please note that compiling Aphanite with default parameters will likely result in a glibc dynamically linked binary, which may not run on all types of container bases, especially Alpine or `scratch`.

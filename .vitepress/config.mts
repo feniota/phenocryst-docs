@@ -21,7 +21,7 @@ export default defineConfig({
 
   lastUpdated: true,
   sitemap: {
-    hostname: "https://phenocryst.ferris.love",
+    hostname: "https://phenocryst.feniota.org",
   },
 
   // Tell the Vue template compiler that CF AI Search web components

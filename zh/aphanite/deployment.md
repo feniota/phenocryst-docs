@@ -214,7 +214,7 @@ sudo semanage fcontext -a -t bin_t /opt/aphanite/aphanite
 sudo restorecon -Rv /opt/aphanite/aphanite
 ```
 
-### 启动服务
+### 启动服务 {#systemd-commands}
 
 最后，你可以运行下面的命令管理 Aphanite：
 
@@ -228,3 +228,123 @@ sudo systemctl disable aphanite # 让 Aphanite 不再开机自启动
 systemctl status aphanite # 查看当前的状态
 journalctl -u aphanite # 阅读 Aphanite 过往产生的日志
 ```
+
+## 持久化运行（容器）
+
+> [!NOTE]
+>
+> 下面的内容仅适用于 Linux。
+
+如果你使用容器化的方式来运行 Aphanite，那么让它持久化运行十分简单。下面讲解两个思路。
+
+### 方案一：`--detach` 参数
+
+这是最简单的方式，你只需要在启动容器的时候加上 `-d` 即 `--detach` 参数即可，容器后端会自动让它在后台持续运行。
+
+```bash{2}
+podman run \ # 或 docker
+  -d \
+  --name aphanite \
+  -p 3000:3000 \
+  -v "~/.aphanite:/app:Z" \
+  quay.io/feniota/aphanite:latest
+```
+
+此时配上 `--restart unless-stopped` 参数可能会更好。这让容器后端在出现意料之外的故障时自动重启容器，保证服务的可用性。
+
+```bash{2,3}
+podman run \ # 或 docker
+  -d \
+  --restart unless-stopped \
+  --name aphanite \
+  -p 3000:3000 \
+  -v "~/.aphanite:/app:Z" \
+  quay.io/feniota/aphanite:latest
+```
+
+### 方案二：Podman Quadlet
+
+Podman Quadlet 是来自 Podman 的一个 systemd 单元生成器。它可以让你用编写 Systemd 单元文件相同的 INI 语法来管理 Podman 容器。
+
+该方案的好处是：
+
+- 与底层系统服务（Systemd）深度集成，具有比手动启动容器更高的可靠性。
+- 声明式的配置文件，便于管理和迁移。
+- 可以使用 Systemd 的日志管理功能来查看容器的日志。
+- 0 配置开机自启动。
+
+当然也有明显的缺点：
+
+- Docker 无法使用该方案。
+- 不适合喜欢用面板管理服务器的情况。
+- 需要学习 Systemd 的配置。
+
+下面是一个示例的 Quadlet 配置文件，它假定你把 Aphanite 的配置文件和数据库放在 `/opt/aphanite` 下。
+
+```ini
+[Unit]
+Description=Aphanite Yggdrasil Server
+After=network-online.target
+
+[Container]
+Image=quay.io/feniota/aphanite:v0.1.0 # 不建议在此处使用 latest
+PublishPort=3000:3000
+Volume=/opt/aphanite:/app:Z
+
+[Install]
+WantedBy=multi-user.target
+```
+
+保存它，并把它放置在 `/etc/containers/systemd/aphanite.container`，随后运行：
+
+```bash
+sudo systemctl daemon-reload
+```
+
+Podman Quadlet 会基于该配置文件自动生成 `aphanite.service`，你可以像管理 Systemd 服务一样管理它。比如说：
+
+```bash
+sudo systemctl start aphanite # 启动 Aphanite
+sudo systemctl stop aphanite # 停止 Aphanite
+sudo systemctl status aphanite # 查看 Aphanite 的状态
+sudo journalctl -u aphanite # 查看 Aphanite 的日志
+sudo journalctl -fu aphanite # 查看 Aphanite 的实时日志
+```
+
+启动 Aphanite 服务之后，Systemd 会自动调用 Podman 来下载和启动容器。如果你在中途需要修改 Aphanite 的配置文件，可能需要在那之后重启服务。
+
+> [!NOTE]
+> 由于 Podman Quadlet 生成的单元文件被 systemd 视为临时的，因此无法直接通过 `enable` 或 `disable` 
+> 来设置开机自启动。然而，因为上面的示例里包含了 `[Install]` 小节，Podman Quadlet 会自动在 `multi-user.target.wants` 里添加该服务。
+> 也就是说，在你执行 `systemctl daemon-reload` 后，Aphanite 就已经被设置为会开机自启动了。
+
+### 方案三：手动编写 Systemd 单元文件
+
+```ini
+[Unit]
+Description=Aphanite Yggdrasil Server
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull quay.io/feniota/aphanite:latest
+ExecStart=/usr/bin/docker run --rm --name %n -p 3000:3000 -v /opt/aphanite:/app:Z quay.io/feniota/aphanite:v0.1.0
+ExecStop=/usr/bin/docker stop %n
+
+[Install]
+WantedBy=multi-user.target
+```
+
+将它放置在 `/etc/systemd/system/aphanite.service`，然后运行：
+
+```bash
+sudo systemctl daemon-reload
+```
+
+就能像管理 Systemd 服务一样管理 Aphanite 了。具体管理方法可参考[上文中的命令](#systemd-commands)。
+
+该方案的可维护性弱于 Podman Quadlet，因此在有条件安装 Podman（Why not？）的情况下，不建议使用该方案，除非你只能用 Docker 且迁移到 Podman 会很困难并且你还特别需要 Systemd 的功能。

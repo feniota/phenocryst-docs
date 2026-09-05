@@ -105,4 +105,45 @@ deno task build
 
 ## 使用 Docker 镜像 {#docker}
 
-Coming soon!
+我们提供的官方 Docker 镜像位于 [`quay.io/feniota/aphanite`](https://quay.io/repository/feniota/aphanite?tab=tags)。
+
+官方镜像的基镜像是 `quay.io/fedora/fedora-minimal:45`，总下载大小在 70MB 左右，下载后实际占用的空间在 180MB 左右。然而，Fedora 的更新策略十分激进，所以如果你的内核版本过旧，可能会导致容器无法运行。如果遇到问题，请尝试[直接使用二进制文件](#binary-usage)（记得选择 musl libc 版本）。
+
+你可以运行以下命令拉取镜像：
+
+```bash
+podman pull quay.io/feniota/aphanite:latest
+# 或者
+docker pull quay.io/feniota/aphanite:latest
+```
+
+`quay.io` 有可能在国内难以访问，如果遇到下载问题，可以使用由南京大学提供的镜像源，即把 `quay.io` 换成 `quay.nju.edu.cn`。
+
+Aphanite 在每次发布新版后，都会自动针对对应版本构建新的 Docker 镜像。每个版本的镜像都会打上对应的版本号标签，例如 `quay.io/feniota/aphanite:v0.1.0`。
+
+要使用 Docker 或其他容器平台部署 Aphanite，你应该先创建一个目录来存储配置文件和数据库，下面假设这个目录是 `~/.aphanite`。然后运行以下命令来启动容器：
+
+```bash{5}
+mkdir -p ~/.aphanite
+podman run -d \ # 或 docker
+  --name aphanite \
+  --restart unless-stopped \
+  -p 3000:3000 \ # 如果你不想使用默认端口，请修改这里的前一个 3000
+  -v "~/.aphanite:/app:Z" \
+  quay.io/feniota/aphanite:latest
+```
+
+下一步，在将服务暴露到公网之前，请在 `~/.aphanite/config.toml` 完成你的配置。具体请参考[配置](/zh/aphanite/configuration)章节。
+
+
+### 自行构建 Docker 镜像
+
+如果你不想使用我们预构建的官方镜像，你也可以自行编译。下载源码后，运行：
+
+```bash
+podman build -t aphanite:latest .
+# 或者
+docker build -t aphanite:latest .
+```
+
+你也可以自行修改 Dockerfile 来满足你的需求。不过请注意，如果你使用默认参数编译 Aphanite，很有可能会生成一个 glibc 动态链接的二进制文件，这在某些类型的容器基础镜像上（尤其是 Alpine 或 `scratch`）可能无法运行。
