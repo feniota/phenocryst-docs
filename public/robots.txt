@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://phenocryst.ferris.love/sitemap.xml
+Sitemap: https://phenocryst.feniota.org/sitemap.xml
