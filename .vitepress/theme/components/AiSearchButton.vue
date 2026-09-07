@@ -2,7 +2,7 @@
 import { inBrowser } from "vitepress";
 import { onMounted, onUnmounted } from "vue";
 
-const SEARCH_API_URL = "https://21995922-3f2c-4ecf-8d89-f626c7d4c050.search.ai.cloudflare.com/";
+const SEARCH_API_URL = "https://phenocryst-docs-search.feniota.org/";
 
 let snippetAttached = false;
 
