@@ -2,7 +2,9 @@
 description: "Phenocryst 是一个服务器（Aphanite）— 客户端（Phanerite）系统，为 Minecraft 模组私服提供一键启动体验；另有镜像服务（Granodiorite）加速游戏下载。"
 ---
 
-# Phenocryst
+# Feniota Minecraft 文档
+
+欢迎来到 Feniota Minecraft 文档站！这里记载了一些 Phenocryst 项目——Feniota 的 Minecraft 启动和配置下发软件套件——的相关信息。
 
 > 斑晶（Phenocryst）是一种早期形成、相对较大且通常明显大于火成岩基质颗粒的晶体。
 >
