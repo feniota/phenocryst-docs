@@ -1,6 +1,6 @@
 # phenocryst-docs
 
-[网站](https://phenocryst.ferris.love)
+[网站](https://mc.ferris.love)
 
 ## 编写
 
@@ -15,7 +15,7 @@ pnpm i
 运行预览服务器：
 
 ```
-pnpm run docs:dev
+pnpm run dev
 ```
 
 ## 构建
@@ -23,7 +23,7 @@ pnpm run docs:dev
 本地测试构建：
 
 ```
-pnpm run docs:build
+pnpm run build
 ```
 
 注意，在推送前，应该运行一遍上述构建指令来检查（构建有可能不成功，导致 CI 失败。）

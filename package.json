@@ -1,8 +1,10 @@
 {
   "scripts": {
-    "docs:dev": "vitepress dev",
-    "docs:build": "git fetch --unshallow && vitepress build",
-    "docs:preview": "vitepress preview"
+    "dev": "vitepress dev",
+    "build": "git fetch --unshallow && vitepress build",
+    "preview": "vitepress preview",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@cloudflare/ai-search-snippet": "^0.0.42",

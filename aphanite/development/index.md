@@ -9,7 +9,7 @@ description: "Technical documentation for developers contributing to Aphanite."
 
 This section covers technical details of Aphanite, intended for developers. If you're a regular user who doesn't want to dive into the technical side, you've likely clicked the wrong link. [Take me back!](/aphanite/)
 
-Aphanite is open source software ([repository](https://github.com/feniota/aphanite)), licensed under the MIT License. This means you are free to copy, modify, distribute, and even sell Aphanite, as long as you retain the developers' attribution ("Feniota team", or "Tuxium and Enita"). However, please note that we are **not obligated** to provide any form of technical support, nor will we be **held responsible** for any consequences arising from the use of Aphanite.
+Aphanite is open source software ([repository](https://git.feniota.org/feniota/aphanite)), licensed under the MIT License. This means you are free to copy, modify, distribute, and even sell Aphanite, as long as you retain the developers' attribution ("Feniota team", or "Tuxium and Enita"). However, please note that we are **not obligated** to provide any form of technical support, nor will we be **held responsible** for any consequences arising from the use of Aphanite.
 
 ## Basic Information
 

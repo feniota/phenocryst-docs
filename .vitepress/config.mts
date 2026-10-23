@@ -21,7 +21,7 @@ export default defineConfig({
 
   lastUpdated: true,
   sitemap: {
-    hostname: "https://phenocryst.feniota.org",
+    hostname: "https://mc.feniota.org",
   },
 
   // Tell the Vue template compiler that CF AI Search web components
@@ -245,7 +245,7 @@ export default defineConfig({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/feniota/phenocryst-docs",
+        link: "https://git.feniota.org/feniota/mc-docs",
       },
     ],
   },

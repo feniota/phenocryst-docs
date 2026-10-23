@@ -29,7 +29,7 @@ Aphanite 自身是被设计为容易部署的。不过，我们也提供可以�
 
 如果你的操作系统或电脑架构不在上面两种之中，恐怕你只能考虑[从源码编译](#compile-from-source)了。
 
-- [在 GitHub Releases 下载](https://github.com/feniota/aphanite/releases)
+- [在 Releases 下载](https://git.feniota.org/feniota/aphanite/releases)
 - 在 Cloudflare R2 下载（coming soon）
 
 下载之后，直接双击 `.exe` 文件（Windows）或者 `chmod +x` 之后就可以运行。
@@ -83,23 +83,26 @@ Aphanite 本体是用 Rust 编写的，并且其中有前端（网页）部分�
 
 - C/C++ 编译工具链。（由你使用的操作系统而定——比如说，如果你使用 macOS，需要[安装 Xcode 命令行工具](https://www.freecodecamp.org/chinese/news/install-xcode-command-line-tools/)。）
 - [Rust 工具链](https://rustup.rs)。
-- [Deno](https://deno.com/)。
+- [Node.js](https://nodejs.org/)（v24+）。
+- [pnpm](https://pnpm.io/)。
 
 安装好之后，运行下面的命令来克隆 Aphanite：（你也可以直接下载 Release 中的“Source code (zip)”并解压。）
 
 ```bash
-git clone https://github.com/feniota/aphanite.git --depth=1
+git clone https://git.feniota.org/feniota/aphanite.git --depth=1
 ```
 
 然后，打开终端，运行下面的指令：
 
 ```bash
 cd aphanite
-deno install
-deno task build
+pnpm install
+pnpm build x86_64-unknown-linux-gnu
 ```
 
-稍等片刻。编译完成后，`aphanite` 二进制文件会出现在 `源代码目录/target/release` 下。
+请将目标平台三元组（target triple）替换为你自己的平台对应的值（例如 Windows 对应 `x86_64-pc-windows-gnu`）。如果不带参数运行 `pnpm build`，则会构建所有发布目标，并额外在 `dist/` 下打包出 zip 文件。
+
+稍等片刻。编译完成后，`aphanite` 二进制文件会出现在 `源代码目录/target/<三元组>/release` 下。
 
 接下来，请看[初始化配置文件](#init)。
 
@@ -107,7 +110,7 @@ deno task build
 
 我们提供的官方 Docker 镜像位于 [`quay.io/feniota/aphanite`](https://quay.io/repository/feniota/aphanite?tab=tags)。
 
-官方镜像的基镜像是 `quay.io/fedora/fedora-minimal:45`，总下载大小在 70MB 左右，下载后实际占用的空间在 180MB 左右。然而，Fedora 的更新策略十分激进，所以如果你的内核版本过旧，可能会导致容器无法运行。如果遇到问题，请尝试[直接使用二进制文件](#binary-usage)（记得选择 musl libc 版本）。
+官方镜像基于 `scratch` 构建，其中只包含一个静态链接（musl）的 Aphanite 二进制文件，因此体积非常小，且只要内核版本不太老旧，就能在任意 Linux x64 主机上运行。这也意味着该镜像是“distroless”的：容器内没有 shell 或其他任何工具，你无法 `docker exec` 进入容器——请通过挂载的宿主机目录来管理配置文件和数据。
 
 你可以运行以下命令拉取镜像：
 
@@ -133,8 +136,11 @@ podman run -d \ # 或 docker
   quay.io/feniota/aphanite:latest
 ```
 
-下一步，在将服务暴露到公网之前，请在 `~/.aphanite/config.toml` 完成你的配置。具体请参考[配置](/zh/aphanite/configuration)章节。
+> [!NOTE]
+>
+> 镜像以 UID 1000 的非 root 用户运行，因此挂载的目录必须对该用户可写。使用 rootless Podman 时，请运行 `podman unshare chown -R 1000:1000 ~/.aphanite`；使用（rootful 的）Docker 时，请运行 `sudo chown -R 1000:1000 ~/.aphanite`。
 
+如果配置文件不存在，镜像会在首次启动时自动生成一份。因此，在容器启动后、将服务暴露到公网之前，请编辑好 `~/.aphanite/config.toml`（具体请参考[配置](/zh/aphanite/configuration)章节），然后重启容器使配置生效。
 
 ### 自行构建 Docker 镜像
 
@@ -146,4 +152,4 @@ podman build -t aphanite:latest .
 docker build -t aphanite:latest .
 ```
 
-你也可以自行修改 Dockerfile 来满足你的需求。不过请注意，如果你使用默认参数编译 Aphanite，很有可能会生成一个 glibc 动态链接的二进制文件，这在某些类型的容器基础镜像上（尤其是 Alpine 或 `scratch`）可能无法运行。
+你也可以自行修改 Dockerfile 来满足你的需求。官方 Dockerfile 将 Aphanite 编译为 musl 静态链接的二进制文件，并启用了 `bundle-certs` 特性，把 Mozilla 根证书嵌入到二进制文件中——这是必要的，因为 `scratch` 基础镜像中不包含任何 CA 证书。如果你要编写自己的 Dockerfile，请注意：使用默认参数编译 Aphanite 很有可能会生成一个 glibc 动态链接的二进制文件，这在某些类型的容器基础镜像上（尤其是 Alpine 或 `scratch`）可能无法运行。

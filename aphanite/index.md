@@ -9,7 +9,7 @@ description: "Aphanite is an all-in-one Minecraft offline-mode server that bundl
 >
 > _— [Wikipedia](https://en.wikipedia.org/wiki/Aphanite)_
 
-[Aphanite](https://github.com/feniota/aphanite) is the central server of a Phenocryst system. It handles player information management, Minecraft authentication, and distribution of modpack configurations.
+[Aphanite](https://git.feniota.org/feniota/aphanite) is the central server of a Phenocryst system. It handles player information management, Minecraft authentication, and distribution of modpack configurations.
 
 ## Features
 

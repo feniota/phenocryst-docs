@@ -19,6 +19,6 @@ description: "Aphanite 和 Phanerite 的下载链接。"
 >
 > Aphanite 是设计给服主在自己的服务器上部署的软件。如果你只是玩家，你想要寻找的大概率是 Phanerite 启动器（见上方）。不要下载错了！
 
-- [GitHub Release](https://github.com/feniota/aphanite/releases/latest)
+- [GitHub Release](https://git.feniota.org/feniota/aphanite/releases)
 
 下载之后，请到[安装](/zh/aphanite/installation)以查看详细的安装教程。

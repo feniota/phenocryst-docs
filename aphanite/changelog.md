@@ -18,17 +18,23 @@ This is the first official release of Aphanite.
 Migration from older versions (development versions from before [PR #17](https://github.com/feniota/aphanite/pull/17) was merged) primarily involves migrating the default database backend from SQLite to Turso. Follow these steps:
 
 1. Connect to the database using `sqlite3` or another tool:
+
 ```bash
 sqlite3 path/to/db.sqlite
 ```
+
 2. Enable WAL mode:
+
 ```sql
 PRAGMA journal_mode = "wal";
 PRAGMA wal_checkpoint(truncate);
 ```
+
 3. Exit `sqlite3` or the other tool:
+
 ```
 .exit
 ```
+
 4. Update the configuration file by changing the `database.backend` field from `sqlite` to `turso`.
 5. Replace the Aphanite binary to complete the migration.

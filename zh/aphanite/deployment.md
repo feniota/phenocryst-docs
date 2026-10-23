@@ -25,7 +25,7 @@ description: "在生产环境中使用反向代理和 TLS 部署 Aphanite。"
 > [!TIP]
 >
 > <details><summary>如果你不确定/读不懂这里的内容，可以询问 AI。这里是我们为你编写好的提示词，只需复制给 AI 就可以了。</summary>
-> 我是一个对计算机技术不太了解的人。我正在配置 Aphanite，这是一个为 Minecraft 私服设计的服务器程序。它不自带 SSL 功能，并且需要我和我的玩家们都能直接在网络上访问到它。为此，我需要为它配置反向代理（来实现 SSL），我可能还要为它配置内网穿透服务。它的文档地址在 <a href="https://phenocryst.ferris.love/zh/aphanite/deployment">https://phenocryst.ferris.love/zh/aphanite/deployment</a>。Aphanite 的开发者们给了我下面三个部署方案：方案一，使用 SakuraFrp 来内网穿透，可以使用它提供的“自动 HTTPS”功能实现 SSL，还能利用 SakuraFrp 提供的二级域名功能，这样即使我没有自己的域名也能让朋友们访问到，但缺点是有流量限制，且需要签到，并非一劳永逸的免费。方案二，使用 Cloudflare Tunnels 来内网穿透，优点是同样有自动 SSL，且基本是毫无限制的免费，但缺点是我需要一个在 Cloudflare 上的域名（文档提到我可以通过 DigitalPlat 获取免费域名，所以这不太是问题）。方案三，使用 Nginx 单独反向代理，不配置内网穿透，这需要我有服务器，且服务器有公网 IP 或公网端口转发，但配置 Nginx 反向代理可能需要一些技术——不过市面上的服务器面板产品可以简化这一过程。现在，请你查阅那个链接里的文档，并询问我几个问题，以决定我应该用哪一个方案（或提出你自己的新方案）。请开始问我：1.我把 Aphanite 部署在哪里？（你可以自己思考一下我部署的地方会不会有公网IP；如果缺失细节，请继续询问我。）2.我有自己的域名吗？3.（如果我有服务器）我的服务器上安装管理面板了吗？是什么面板？4.（如果我有服务器，但没安装面板）我熟悉命令行吗？如果我不熟悉命令行，我愿意跟着步骤一步一步操作吗？问完这些问题之后，如果还有缺失的细节，请继续事无巨细地询问我。最后，请给出你的建议，并手把手一步一步地教我如何完成配置。我可能不理解部分专有名词，请你顺便用简单易懂的方式解释。
+> 我是一个对计算机技术不太了解的人。我正在配置 Aphanite，这是一个为 Minecraft 私服设计的服务器程序。它不自带 SSL 功能，并且需要我和我的玩家们都能直接在网络上访问到它。为此，我需要为它配置反向代理（来实现 SSL），我可能还要为它配置内网穿透服务。它的文档地址在 <a href="https://mc.feniota.org/zh/aphanite/deployment">https://phenocryst.ferris.love/zh/aphanite/deployment</a>。Aphanite 的开发者们给了我下面三个部署方案：方案一，使用 SakuraFrp 来内网穿透，可以使用它提供的“自动 HTTPS”功能实现 SSL，还能利用 SakuraFrp 提供的二级域名功能，这样即使我没有自己的域名也能让朋友们访问到，但缺点是有流量限制，且需要签到，并非一劳永逸的免费。方案二，使用 Cloudflare Tunnels 来内网穿透，优点是同样有自动 SSL，且基本是毫无限制的免费，但缺点是我需要一个在 Cloudflare 上的域名（文档提到我可以通过 DigitalPlat 获取免费域名，所以这不太是问题）。方案三，使用 Nginx 单独反向代理，不配置内网穿透，这需要我有服务器，且服务器有公网 IP 或公网端口转发，但配置 Nginx 反向代理可能需要一些技术——不过市面上的服务器面板产品可以简化这一过程。现在，请你查阅那个链接里的文档，并询问我几个问题，以决定我应该用哪一个方案（或提出你自己的新方案）。请开始问我：1.我把 Aphanite 部署在哪里？（你可以自己思考一下我部署的地方会不会有公网IP；如果缺失细节，请继续询问我。）2.我有自己的域名吗？3.（如果我有服务器）我的服务器上安装管理面板了吗？是什么面板？4.（如果我有服务器，但没安装面板）我熟悉命令行吗？如果我不熟悉命令行，我愿意跟着步骤一步一步操作吗？问完这些问题之后，如果还有缺失的细节，请继续事无巨细地询问我。最后，请给出你的建议，并手把手一步一步地教我如何完成配置。我可能不理解部分专有名词，请你顺便用简单易懂的方式解释。
 > </details>
 
 **TL;DR: 反向代理：YES；内网穿透：按需。**
@@ -235,7 +235,11 @@ journalctl -u aphanite # 阅读 Aphanite 过往产生的日志
 >
 > 下面的内容仅适用于 Linux。
 
-如果你使用容器化的方式来运行 Aphanite，那么让它持久化运行十分简单。下面讲解两个思路。
+如果你使用容器化的方式来运行 Aphanite，那么让它持久化运行十分简单。下面讲解三个思路。
+
+> [!NOTE]
+>
+> 官方镜像以 UID 1000 的非 root 用户运行。请确保你挂载的宿主机目录（如 `/opt/aphanite`）对该用户可写——对于下面的示例而言，执行 `sudo chown -R 1000:1000 /opt/aphanite` 即可。
 
 ### 方案一：`--detach` 参数
 
@@ -314,7 +318,7 @@ sudo journalctl -fu aphanite # 查看 Aphanite 的实时日志
 启动 Aphanite 服务之后，Systemd 会自动调用 Podman 来下载和启动容器。如果你在中途需要修改 Aphanite 的配置文件，可能需要在那之后重启服务。
 
 > [!NOTE]
-> 由于 Podman Quadlet 生成的单元文件被 systemd 视为临时的，因此无法直接通过 `enable` 或 `disable` 
+> 由于 Podman Quadlet 生成的单元文件被 systemd 视为临时的，因此无法直接通过 `enable` 或 `disable`
 > 来设置开机自启动。然而，因为上面的示例里包含了 `[Install]` 小节，Podman Quadlet 会自动在 `multi-user.target.wants` 里添加该服务。
 > 也就是说，在你执行 `systemctl daemon-reload` 后，Aphanite 就已经被设置为会开机自启动了。
 
@@ -329,7 +333,7 @@ Requires=docker.service
 [Service]
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker stop %n
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull quay.io/feniota/aphanite:latest
 ExecStart=/usr/bin/docker run --rm --name %n -p 3000:3000 -v /opt/aphanite:/app:Z quay.io/feniota/aphanite:v0.1.0

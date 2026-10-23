@@ -16,8 +16,8 @@ Aphanite 需要配置之后才能正确履行它的职责。请转到[Aphanite �
 
 Aphanite 和 Phanerite 都是开源软件。它们的仓库地址：
 
-- Aphanite: https://github.com/feniota/aphanite
-- Phanerite: https://github.com/feniota/phanerite
+- Aphanite: https://git.feniota.org/feniota/aphanite
+- Phanerite: https://git.feniota.org/feniota/phanerite
 
 如果你发现了问题，或者有什么建议，欢迎提出 Issue！
 

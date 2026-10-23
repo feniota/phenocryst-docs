@@ -16,8 +16,8 @@ Aphanite needs configuration before it can do its job. Head over to [Aphanite's 
 
 Both Aphanite and Phanerite are open source software. Their repositories:
 
-- Aphanite: https://github.com/feniota/aphanite
-- Phanerite: https://github.com/feniota/phanerite
+- Aphanite: https://git.feniota.org/feniota/aphanite
+- Phanerite: https://git.feniota.org/feniota/phanerite
 
 If you find a bug or have a suggestion, feel free to open an Issue!
 

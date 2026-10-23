@@ -29,7 +29,7 @@ We provide pre-compiled binaries for Windows x64 and Linux x64.
 
 If your operating system or CPU architecture isn't listed above, you'll likely need to [compile from source](#compile-from-source).
 
-- [Download from GitHub Releases](https://github.com/feniota/aphanite/releases)
+- [Download from GitHub Releases](https://git.feniota.org/feniota/aphanite/releases)
 - Download from Cloudflare R2 (coming soon)
 
 After downloading, just double-click the `.exe` file (Windows) or `chmod +x` and run it.
@@ -83,23 +83,26 @@ Aphanite is written in Rust and it has a frontend (web) part, so you'll need:
 
 - C/C++ build toolchain (depends on your OS — e.g., on macOS you'll need to [install Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/))
 - [Rust toolchain](https://rustup.rs)
-- [Deno](https://deno.com)
+- [Node.js](https://nodejs.org/) (v24+)
+- [pnpm](https://pnpm.io/)
 
 Once installed, clone Aphanite (or download "Source code (zip)" from Releases and extract it):
 
 ```bash
-git clone https://github.com/feniota/aphanite.git --depth=1
+git clone https://git.feniota.org/feniota/aphanite.git --depth=1
 ```
 
 Then open a terminal and run:
 
 ```bash
 cd aphanite
-deno install
-deno task build
+pnpm install
+pnpm build x86_64-unknown-linux-gnu
 ```
 
-Wait a moment. After compilation, the `aphanite` binary will be at `source_dir/target/release`.
+Replace the target triple with the one for your platform (e.g., `x86_64-pc-windows-gnu` for Windows). Running `pnpm build` without arguments builds all release targets and additionally packages them into zips under `dist/`.
+
+Wait a moment. After compilation, the `aphanite` binary will be at `source_dir/target/<triple>/release`.
 
 Next, head to [Initialize Configuration](#init).
 
@@ -107,7 +110,7 @@ Next, head to [Initialize Configuration](#init).
 
 Official Docker images are available as [`quay.io/feniota/aphanite`](https://quay.io/repository/feniota/aphanite?tab=tags).
 
-These images are layered on top of `quay.io/fedora/fedora-minimal:45`, and are about 70MB (compressed) or 180MB (uncompressed) in size. Fedora is known for its aggressive acceptance of new library versions, so the container might not run if your kernel is old enough. If you encounter issues, please try the standalone binary (musl libc version).
+These images are built `FROM scratch` and contain nothing but a statically linked (musl) Aphanite binary, so they are very small in size and run on any Linux x64 host as long as the kernel isn't too old. This also means the image is "distroless": there is no shell or any other tooling inside, so you cannot `docker exec` into it — manage configuration and data through the mounted host directory instead.
 
 You can pull the image with:
 
@@ -121,7 +124,7 @@ Each release is tagged with the corresponding version number, e.g., `quay.io/fen
 
 To deploy Aphanite with Docker, (or similar container hosts), you should first create a directory to store the configuration and database.
 Let's assume the directory is `~/.aphanite`.
-Then run the following command to start the container: 
+Then run the following command to start the container:
 
 ```bash{5}
 mkdir -p ~/.aphanite
@@ -133,7 +136,11 @@ podman run -d \ # or docker
   quay.io/feniota/aphanite:latest
 ```
 
-Next, please edit `~/.aphanite/config.toml` before exposing the service publicly. Refer to [Configuration](/aphanite/configuration) chapter.
+> [!NOTE]
+>
+> The image runs as the non-root user with UID 1000, so the mounted directory must be writable by it. With rootless Podman, run `podman unshare chown -R 1000:1000 ~/.aphanite`; with (rootful) Docker, run `sudo chown -R 1000:1000 ~/.aphanite`.
+
+If no configuration file exists, the image automatically generates one on first start. So once the container is up, edit `~/.aphanite/config.toml` before exposing the service publicly (see [Configuration](/aphanite/configuration)), then restart the container to apply your changes.
 
 ### Building the Docker Image Yourself
 
@@ -145,4 +152,4 @@ podman build -t aphanite:latest .
 docker build -t aphanite:latest .
 ```
 
-You can always customize Dockerfile to your liking. But please note that compiling Aphanite with default parameters will likely result in a glibc dynamically linked binary, which may not run on all types of container bases, especially Alpine or `scratch`.
+You can always customize the Dockerfile to your liking. The official one compiles Aphanite as a statically linked musl binary with the `bundle-certs` feature enabled, which embeds Mozilla root certificates into the binary — necessary because the `scratch` base image ships no CA store. If you write your own, please note that compiling Aphanite with default parameters will likely result in a glibc dynamically linked binary, which may not run on all types of container bases, especially Alpine or `scratch`.

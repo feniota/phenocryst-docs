@@ -19,6 +19,6 @@ After downloading, visit [Installation](/phanerite/installation) for detailed se
 >
 > Aphanite is designed for server owners to deploy on their own machines. If you are a player, you're likely looking for the Phanerite launcher (above). Don't download the wrong one!
 
-- [GitHub Release](https://github.com/feniota/aphanite/releases/latest)
+- [Release](https://git.feniota.org/feniota/aphanite/releases)
 
 After downloading, visit [Installation](/aphanite/installation) for detailed setup instructions.

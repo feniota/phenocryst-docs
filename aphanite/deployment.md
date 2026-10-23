@@ -230,6 +230,10 @@ journalctl -u aphanite              # View Aphanite logs
 
 If you run Aphanite in a container, keeping it running persistently is quite simpler. The following sections describe three approaches.
 
+> [!NOTE]
+>
+> The official image runs as the non-root user with UID 1000. Make sure the host directory you mount (e.g. `/opt/aphanite`) is writable by it — for the examples below, `sudo chown -R 1000:1000 /opt/aphanite` will do.
+
 ### Option 1: The `--detach` Flag
 
 This is the simplest approach. Add the `-d`, or `--detach`, flag when starting the container, and the container runtime will keep it running in the background.
@@ -322,7 +326,7 @@ Requires=docker.service
 [Service]
 TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker stop %n
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull quay.io/feniota/aphanite:latest
 ExecStart=/usr/bin/docker run --rm --name %n -p 3000:3000 -v /opt/aphanite:/app:Z quay.io/feniota/aphanite:v0.1.0

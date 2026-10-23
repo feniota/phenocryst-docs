@@ -2,7 +2,9 @@
 description: "Phenocryst is a pair of server (Aphanite) and client (Phanerite) for private modded Minecraft servers, with a mirror service (Granodiorite) for accelerated game downloads."
 ---
 
-# Phenocryst
+# Feniota Minecraft Docs
+
+This is the document site of the Phenocryst project, Feniota's Minecraft launching and profile OTA software set.
 
 > A phenocryst is an early forming, relatively large and usually conspicuous crystal distinctly larger than the grains of the rock groundmass of an igneous rock.
 >

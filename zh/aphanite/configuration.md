@@ -285,11 +285,11 @@ PostgreSQL 数据库的连接 URL。如果你上面设置的是 `turso` 的话�
 
 > [!IMPORTANT]
 >
-> 本文是基于下面的示例配置文件编写的。然而，由于精力有限，如果 Aphanite 的配置文件格式发生了更新，本文有可能**无法**及时同步。因此，请总是视 `aphanite init` 生成的配置文件为**唯一权威依据**。如果本文描述的内容和命令生成的配置文件中的注释有冲突，请总以配置文件为主。你可以在[这里](https://github.com/feniota/aphanite/blob/main/src/assets/config.example.toml)查看 Aphanite 最新的示例配置文件。
+> 本文是基于下面的示例配置文件编写的。然而，由于精力有限，如果 Aphanite 的配置文件格式发生了更新，本文有可能**无法**及时同步。因此，请总是视 `aphanite init` 生成的配置文件为**唯一权威依据**。如果本文描述的内容和命令生成的配置文件中的注释有冲突，请总以配置文件为主。你可以在[这里](https://git.feniota.org/feniota/aphanite/src/branch/main/src/assets/config.example.toml)查看 Aphanite 最新的示例配置文件。
 
 下面是 Aphanite 内置的示例配置文件，本文也基于它编写。
 
-Commit: <a href="https://github.com/feniota/aphanite/commit/2eaf86b96dff8bdbbf65ccc510e00a611e99e059"><Badge type="tip" text="2eaf86b" /></a>
+Commit: <a href="https://git.feniota.org/feniota/aphanite/commit/2eaf86b96dff8bdbbf65ccc510e00a611e99e059"><Badge type="tip" text="2eaf86b" /></a>
 
 ```toml
 # Aphanite configuration file
