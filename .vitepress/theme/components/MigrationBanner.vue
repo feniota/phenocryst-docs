@@ -18,16 +18,17 @@ onMounted(() => {
 </script>
 <template>
   <div v-if="visible" class="migration-banner">
-    <template v-if="lang === 'en'">
-      This site has moved to&nbsp;
-      <a href="https://mc.feniota.org">mc.feniota.org</a>. phenocryst.feniota.org will be shut down
-      in the future.
-    </template>
-    <!-- handcrafted 0.125ic CJK-Latin space -->
-    <template v-else>
-      本站已迁移到<span style="display: inline-block; height: 1px; width: 0.125ic"></span>
-      <a href="https://mc.feniota.org">mc.feniota.org</a>，phenocryst.feniota.org 将在未来关停。
-    </template>
+    <span>
+      <template v-if="lang === 'en'">
+        This site has moved to
+        <a href="https://mc.feniota.org">mc.feniota.org</a>. phenocryst.feniota.org will be shut
+        down soon.
+      </template>
+      <template v-else>
+        本站已迁移到
+        <a href="https://mc.feniota.org">mc.feniota.org</a>，phenocryst.feniota.org 将很快关停。
+      </template>
+    </span>
   </div>
 </template>
 
@@ -64,7 +65,7 @@ html:not(.dark) .migration-banner {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: var(--vp-layout-top-height);
+  min-height: var(--vp-layout-top-height);
   padding: 0 16px;
   box-sizing: border-box;
   text-align: center;
