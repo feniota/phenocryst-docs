@@ -7,6 +7,7 @@ import llmstxt, { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms"
 export default defineConfig({
   title: "Phenocryst Docs",
   description: "Documentation of Aphanite and Phanerite",
+srcDir:"./src",
 
   // sitemap for AI Search crawler
   // Auto-inject AI Search-compatible meta tags for every page
@@ -244,8 +245,12 @@ export default defineConfig({
 
     socialLinks: [
       {
-        icon: "github",
+        icon: "forgejo",
         link: "https://git.feniota.org/feniota/mc-docs",
+      },
+      {
+        icon: "github",
+        link: "https://github.com/feniota/phenocryst-docs",
       },
     ],
   },

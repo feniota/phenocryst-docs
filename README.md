@@ -1,6 +1,6 @@
 # phenocryst-docs
 
-[网站](https://mc.ferris.love)
+[网站](https://mc.feniota.org)
 
 ## 编写
 

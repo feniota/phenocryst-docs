@@ -1,4 +1,4 @@
-# phenocryst-docs — Copilot Instructions
+# Feniota Minecraft Documents — AGENTS.md
 
 ## Build & dev commands
 
@@ -57,7 +57,7 @@ Config in `.vitepress/config.mts` defines two locales: `root` (en) and `zh` (简
 
 ### Cloudflare integration
 
-- Domain: `phenocryst.ferris.love` (Cloudflare Registrar).
+- Domain: `mc.feniota.org`.
 - Hosting: Cloudflare Pages (auto-builds on main branch push).
 - Search: Cloudflare AI Search with public endpoint + CORS.
 - AI Search endpoint URL hardcoded in `AiSearchButton.vue`.

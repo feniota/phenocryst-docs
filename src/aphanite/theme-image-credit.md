@@ -14,7 +14,6 @@ The Aphanite Theme Image (as seen on the login page) is an in-game screenshot ta
   - [Sodium](https://modrinth.com/mod/sodium) and [Iris Shaders](https://modrinth.com/mod/iris) made custom shaders possible.
 - [Ashen 16x](https://modrinth.com/resourcepack/ashen) for the fantastic medieval Minecraft look.
 - [Voxy](https://modrinth.com/mod/voxy) (and [m3t4f1v3's 1.21.1 fork](https://github.com/m3t4f1v3/voxy)) LoD for the incredibly far view distance.
-- [Hyper Realistic Sky](https://modrinth.com/resourcepack/hyper-realistic-sky) for the hyper realistic sky.
 
 ## Structures
 
