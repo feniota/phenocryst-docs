@@ -7,7 +7,7 @@ import llmstxt, { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms"
 export default defineConfig({
   title: "Phenocryst Docs",
   description: "Documentation of Aphanite and Phanerite",
-srcDir:"./src",
+  srcDir: "./src",
 
   // sitemap for AI Search crawler
   // Auto-inject AI Search-compatible meta tags for every page
