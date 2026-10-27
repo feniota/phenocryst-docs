@@ -3,16 +3,38 @@ import { defineConfig } from "vitepress";
 import footnote from "markdown-it-footnote";
 import llmstxt, { copyOrDownloadAsMarkdownButtons } from "vitepress-plugin-llms";
 
+const SITE_TITLE = "Feniota Minecraft Docs";
+const SITE_TITLE_ZH = "Feniota Minecraft 文档";
+
+// Directory name → display name, used to prefix HTML titles with the product
+const PRODUCTS: Record<string, string> = {
+  aphanite: "Aphanite",
+  phanerite: "Phanerite",
+  granodiorite: "Granodiorite",
+};
+
+const EDIT_LINK_PATTERN = "https://github.com/feniota/phenocryst-docs/edit/main/src/:path";
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Phenocryst Docs",
+  title: SITE_TITLE,
   description: "Documentation of Aphanite and Phanerite",
   srcDir: "./src",
 
   // sitemap for AI Search crawler
   // Auto-inject AI Search-compatible meta tags for every page
   transformPageData(pageData) {
-    const title = pageData.frontmatter.layout === "home" ? "Phenocryst Docs" : pageData.title;
+    const isZh = pageData.relativePath === "zh" || pageData.relativePath.startsWith("zh/");
+    const siteTitle = isZh ? SITE_TITLE_ZH : SITE_TITLE;
+    const relativePath = isZh ? pageData.relativePath.slice("zh/".length) : pageData.relativePath;
+    const product = PRODUCTS[relativePath.split("/")[0]];
+
+    // <h1> | <product> | <site title>
+    if (product && pageData.title !== product) {
+      pageData.titleTemplate = `${product} | ${siteTitle}`;
+    }
+
+    const title = pageData.frontmatter.layout === "home" ? siteTitle : pageData.title;
 
     pageData.frontmatter.head ??= [];
     // AI Search picks up title from <meta name="title"> or <meta property="og:title">
@@ -40,7 +62,7 @@ export default defineConfig({
     plugins: [
       llmstxt({
         excludeIndexPage: false,
-        injectLLMHint: false,
+        injectLLMHint: true,
       }),
     ],
   },
@@ -50,11 +72,37 @@ export default defineConfig({
       lang: "en",
     },
     zh: {
-      title: "Phenocryst 文档",
+      title: SITE_TITLE_ZH,
       description: "Aphanite 和 Phanerite 的文档",
       label: "简体中文",
       lang: "zh",
       themeConfig: {
+        editLink: {
+          pattern: EDIT_LINK_PATTERN,
+          text: "在 GitHub 上编辑此页面",
+        },
+        outline: { label: "页面导航" },
+        lastUpdated: { text: "最后更新于" },
+        docFooter: { prev: "上一页", next: "下一页" },
+        returnToTopLabel: "回到顶部",
+        sidebarMenuLabel: "菜单",
+        darkModeSwitchLabel: "主题",
+        lightModeSwitchTitle: "切换到浅色模式",
+        darkModeSwitchTitle: "切换到深色模式",
+        langMenuLabel: "多语言",
+        skipToContentLabel: "跳转到内容",
+        notFound: {
+          title: "页面未找到",
+          quote: "但如果你不改变方向，并且继续寻找，你可能最终会到达你所前往的地方。",
+          linkLabel: "前往首页",
+          linkText: "带我回首页",
+        },
+        llms: {
+          copyText: "复制页面",
+          copiedText: "已复制",
+          viewMarkdownText: "查看 Markdown",
+          openInAIText: "在 {provider} 中打开",
+        },
         nav: [
           {
             text: "首页",
@@ -153,6 +201,10 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    editLink: {
+      pattern: EDIT_LINK_PATTERN,
+      text: "Edit this page on GitHub",
+    },
     footer: {
       message: "msg",
       copyright: "cr",

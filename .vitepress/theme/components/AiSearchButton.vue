@@ -1,8 +1,58 @@
 <script setup lang="ts">
-import { inBrowser } from "vitepress";
-import { onMounted, onUnmounted } from "vue";
+import { inBrowser, useData } from "vitepress";
+import { computed, onMounted, onUnmounted } from "vue";
 
 const SEARCH_API_URL = "https://phenocryst-docs-search.feniota.org/";
+
+const { lang } = useData();
+const isZh = computed(() => lang.value === "zh");
+
+const ZH_TRANSLATIONS = {
+  loadingAriaLabel: "加载中",
+  errorPrefix: "错误：",
+  missingApiUrlError: "缺少 api-url 属性，请提供有效的 API 地址。",
+  poweredBy: "由以下服务提供",
+  placeholder: "搜索文档…",
+  searchButtonLabel: "搜索",
+  searchInputAriaLabel: "搜索文档",
+  searchResultsAriaLabel: "搜索结果",
+  emptyStateTitle: "开始搜索",
+  emptyStateDescription: "输入关键词以搜索",
+  modalEmptyStateDescription: "输入关键词开始搜索",
+  noResultsTitle: "未找到结果",
+  noResultsDescription: "未找到与“{query}”相关的结果",
+  modalNoResultsTitle: "未找到结果",
+  modalNoResultsDescription: "未找到与“{query}”相关的结果",
+  resultsCount: "找到 {n} 个结果",
+  resultsCountPlural: "找到 {n} 个结果",
+  resultsCountOverflow: "显示 {n} 个结果，共 {total} 个",
+  modalResultsCount: "{n} 个结果",
+  modalResultsCountPlural: "{n} 个结果",
+  modalResultsCountZero: "0 个结果",
+  modalResultsCountError: "出错",
+  seeMoreResults: "查看更多结果",
+  groupOther: "其他",
+  favoriteResults: "收藏",
+  recentResults: "最近",
+  addFavorite: "添加到收藏",
+  removeFavorite: "取消收藏",
+  navigateHint: "导航",
+  selectHint: "选择",
+  closeHint: "关闭",
+  closeAriaLabel: "关闭",
+  loadingMessages: [
+    "正在搜索…",
+    "正在翻找结果…",
+    "正在扫描知识库…",
+    "正在匹配最佳结果…",
+    "正在筛选数据…",
+    "快好了…",
+    "正在四处查找…",
+    "正在串联线索…",
+    "正在翻阅页面…",
+    "正在寻找答案…",
+  ],
+};
 
 let snippetAttached = false;
 
@@ -16,7 +66,10 @@ onMounted(async () => {
     // Closed height is 0, so it has zero layout impact.
     const el = document.createElement("search-modal-snippet");
     el.setAttribute("api-url", SEARCH_API_URL);
-    el.setAttribute("placeholder", "Search documentation...");
+    el.setAttribute("placeholder", isZh.value ? "搜索文档…" : "Search documentation...");
+    if (isZh.value) {
+      el.setAttribute("translations", JSON.stringify(ZH_TRANSLATIONS));
+    }
     el.setAttribute("shortcut", "k");
     el.setAttribute("show-url", "true");
     el.setAttribute("show-date", "true");
@@ -66,10 +119,15 @@ onUnmounted(() => {
   <!-- Search trigger button styled like VP default theme.
        The <search-modal-snippet> is dynamically created and attached
        to <body> in script setup — no template rendering needed. -->
-  <button type="button" class="DocSearch DocSearch-Button" aria-label="Search" @click="openSearch">
+  <button
+    type="button"
+    class="DocSearch DocSearch-Button"
+    :aria-label="isZh ? '搜索' : 'Search'"
+    @click="openSearch"
+  >
     <span class="DocSearch-Button-Container">
       <span class="vp-icon DocSearch-Search-Icon" />
-      <span class="DocSearch-Button-Placeholder">Search</span>
+      <span class="DocSearch-Button-Placeholder">{{ isZh ? "搜索" : "Search" }}</span>
     </span>
     <span class="DocSearch-Button-Keys">
       <kbd class="DocSearch-Button-Key" />
