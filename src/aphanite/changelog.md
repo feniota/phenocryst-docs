@@ -5,6 +5,18 @@ description: "Aphanite changelog"
 
 # Changelog
 
+## v0.1.1 (2026-10-27)
+
+- Switched the global allocator to [mimalloc](https://github.com/microsoft/mimalloc).
+- Frontend toolchain: moved from Deno to Node.js, and introduced ESLint for the Svelte code.
+- Fixed [GH-20](https://github.com/feniota/aphanite/issues/20): toast notifications now have
+  built-in localization.
+- OCI container images are now built on `scratch` with musl static linking instead of
+  `fedora-minimal:45`, greatly reducing their size.
+- Added the `APHANITE_AUTO_INIT` environment variable; when set, a missing configuration file is
+  created automatically.
+- Releases are now built, uploaded, and published automatically by GitHub Actions.
+
 ## v0.1.0 (2026-09-04)
 
 This is the first official release of Aphanite.

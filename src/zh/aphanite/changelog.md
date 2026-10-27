@@ -5,6 +5,15 @@ description: "Aphanite 的变更日志"
 
 # 变更日志
 
+## v0.1.1 （2026-10-27）
+
+- 全局堆分配器改用 [mimalloc](https://github.com/microsoft/mimalloc)。
+- 前端工具链：放弃 Deno，迁移到 Node.js；为 Svelte 代码引入 ESLint。
+- 修复 [GH-20](https://github.com/feniota/aphanite/issues/20)：弹出式通知（toast）控件现在内置本地化。
+- OCI 容器的基底从 `fedora-minimal:45` 改为 `scratch` + musl 静态编译，体积大幅缩小。
+- 新增 `APHANITE_AUTO_INIT` 环境变量开关，定义时会自动创建不存在的配置文件。
+- Release 现在由 GitHub Actions 自动构建、上传和发布。
+
 ## v0.1.0 （2026-09-04）
 
 这是 Aphanite 的首个正式版。

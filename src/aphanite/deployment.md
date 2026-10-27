@@ -328,7 +328,7 @@ Description=Aphanite Yggdrasil Server
 After=network-online.target
 
 [Container]
-Image=quay.io/feniota/aphanite:v0.1.0 # Using latest here is not recommended
+Image=quay.io/feniota/aphanite:v0.1.1 # Using latest here is not recommended
 PublishPort=3000:3000
 Volume=/opt/aphanite:/app:Z
 
@@ -395,6 +395,6 @@ sudo systemctl daemon-reload
 You can then manage Aphanite like a Systemd service. See [the commands above](#systemd-commands) for
 details.
 
-This approach is less maintainable than Podman Quadlet. Therefore, if you can install Podman (why
-not?), it is not recommended unless you can only use Docker, migrating to Podman would be difficult,
-and you specifically need Systemd's features.
+This approach is less maintainable than Podman Quadlet. Therefore, it is not recommended unless you
+can only use Docker, migrating to Podman would be difficult, and, even in such a situation, you
+desperately need Systemd's features.

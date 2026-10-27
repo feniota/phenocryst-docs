@@ -4,6 +4,10 @@ description: "Aphanite 配置文件参考，使用 TOML 格式。"
 ---
 
 <script setup>
+// Fetch the latest config.example.toml from Forgejo and highlight it with shiki.
+// Custom Vue elements are compiled **after** the Markdown step (this includes
+// highlighting) in VitePress so we'll need to highlight it ourselves.
+
 import { data as aphanite_config } from "../../components/aphanite-config-toml.data.ts";
 import toml from "@shikijs/langs/toml";
 import github_dark from "@shikijs/themes/github-dark";
@@ -314,11 +318,23 @@ PostgreSQL 数据库的连接 URL。如果你上面设置的是 `turso` 的话�
 >
 > 本文是基于下面的示例配置文件编写的。然而，下面的内容仅反映文档站上次构建时（北京时间 <span v-once>{{ snapshot_time }}</span>）拉取的快照。如果 Aphanite 的配置文件格式发生了更新，本文有可能**无法**及时同步。因此，请总是视 `aphanite init` 生成的配置文件为**唯一权威依据**。如果本文描述的内容和命令生成的配置文件中的注释有冲突，请总以配置文件为主。你可以在[这里](https://git.feniota.org/feniota/aphanite/src/branch/main/src/assets/config.example.toml)查看 Aphanite 最新的示例配置文件。
 
-下面是 Aphanite 内置的示例配置文件，本文也基于它编写。
+<llm-only>
 
-Commit: <a :href="aphanite_config.url"><Badge type="tip" :text="aphanite_config.commit_sha.substr(0, 7)" /></a>
+Note for LLM: TOML 文件的实际内容在 Markdown 里无法渲染出来，请从 URL 获取：
+
+- Forgejo: https://git.feniota.org/feniota/aphanite/raw/branch/main/src/assets/config.example.toml
+- GitHub: https://github.com/feniota/aphanite/raw/refs/heads/main/src/assets/config.example.toml
+
+</llm-only>
+
+<llm-exclude>
+
+下面是 Aphanite 内置的示例配置文件，本文也基于它编写。
 
 <details>
     <summary>点击展开示例配置文件</summary>
+    Commit: <a :href="aphanite_config.url"><Badge type="tip" :text="aphanite_config.commit_sha.substr(0, 7)" /></a>
     <div class="language-toml vp-code" v-html="highlighted_toml"></div>
 </details>
+
+</llm-exclude>

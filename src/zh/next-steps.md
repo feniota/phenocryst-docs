@@ -16,12 +16,20 @@ Aphanite 需要配置之后才能正确履行它的职责。请转到[Aphanite �
 
 Aphanite 和 Phanerite 都是开源软件。它们的仓库地址：
 
-- Aphanite: https://git.feniota.org/feniota/aphanite
-- Phanerite: https://git.feniota.org/feniota/phanerite
+- Aphanite：[Forgejo](https://git.feniota.org/feniota/aphanite) · [GitHub](https://github.com/feniota/aphanite)
+- Phanerite：[Forgejo](https://git.feniota.org/feniota/phanerite) · [GitHub](https://github.com/feniota/phanerite)
 
-如果你发现了问题，或者有什么建议，欢迎提出 Issue！
+(项目主要在私有 Forgejo 实例上维护。GitHub 上是内容完全一致的镜像，供社区贡献 issue 和 PR。)
 
-如果你想要贡献，也非常欢迎提出 Pull Request！（请注意，对于完全由 AI 生成的代码，我们可能会抱较为严苛的态度进行审查。）
+如果你发现了问题，或者有什么建议，欢迎在 GitHub 提 issue！
+
+### 提交 Pull Request
+
+如果你想要贡献，也非常欢迎提出 Pull Request！
+
+贡献时，请将 PR 的合并目标设置成 `github` 分支。（当 PR 合并后，改动会被自动同步到 Forgejo。当这些改动在 Forgejo 上合入 `main`分支 之后，会自动被推送回 GitHub。）
+
+（请注意，对于完全由 AI 生成的代码，我们可能会抱较为严苛的态度进行审查。）
 
 ## 联系我们
 

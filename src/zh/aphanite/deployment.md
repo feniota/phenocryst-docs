@@ -291,7 +291,7 @@ Description=Aphanite Yggdrasil Server
 After=network-online.target
 
 [Container]
-Image=quay.io/feniota/aphanite:v0.1.0 # 不建议在此处使用 latest
+Image=quay.io/feniota/aphanite:v0.1.1 # 不建议在此处使用 latest
 PublishPort=3000:3000
 Volume=/opt/aphanite:/app:Z
 

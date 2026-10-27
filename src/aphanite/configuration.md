@@ -4,6 +4,10 @@ description: "Aphanite configuration file reference, written in TOML format."
 ---
 
 <script setup>
+// Fetch the latest config.example.toml from Forgejo and highlight it with shiki.
+// Custom Vue elements are compiled **after** the Markdown step (this includes
+// highlighting) in VitePress so we'll need to highlight it ourselves.
+
 import { data as aphanite_config } from "../components/aphanite-config-toml.data.ts";
 import toml from "@shikijs/langs/toml";
 import github_dark from "@shikijs/themes/github-dark";
@@ -363,12 +367,24 @@ The registration page URL of this Yggdrasil server.
 > example configuration
 > [here](https://git.feniota.org/feniota/aphanite/src/branch/main/src/assets/config.example.toml).
 
-Below is the built-in example configuration file that this article is based on.
+<llm-only>
 
-Commit:
-<a :href="aphanite_config.url"><Badge type="tip" :text="aphanite_config.commit_sha.substr(0, 7)" /></a>
+Note for LLM: The actual contents of the TOML file cannot be rendered in Markdown. Please fetch them
+from:
+
+- Forgejo: https://git.feniota.org/feniota/aphanite/raw/branch/main/src/assets/config.example.toml
+- GitHub: https://github.com/feniota/aphanite/raw/refs/heads/main/src/assets/config.example.toml
+
+</llm-only>
+
+<llm-exclude>
+
+Below is the built-in example configuration file that this article is based on.
 
 <details>
     <summary>Click to expand the example configuration file</summary>
+    Commit: <a :href="aphanite_config.url"><Badge type="tip" :text="aphanite_config.commit_sha.substr(0, 7)" /></a>
     <div class="language-toml vp-code" v-html="highlighted_toml"></div>
 </details>
+
+</llm-exclude>
