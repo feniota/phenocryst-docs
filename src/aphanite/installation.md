@@ -9,25 +9,39 @@ This page details how to install and run Aphanite.
 
 > [!TIP]
 >
-> You do **not** need a server to deploy Aphanite. Compared to a local PC, the advantage of a server is 24/7 uptime. If you don't have a running VPS (e.g., you're hosting your Minecraft server on your own computer or using a panel-limited host), there's no need to buy a separate server just for Aphanite. If you decide to deploy on a local machine, you'll need to use a tunneling service. See [Deployment > Tunneling](/aphanite/deployment#port-forwarding) for details.
+> You do **not** need a server to deploy Aphanite. Compared to a local PC, the advantage of a server
+> is 24/7 uptime. If you don't have a running VPS (e.g., you're hosting your Minecraft server on
+> your own computer or using a panel-limited host), there's no need to buy a separate server just
+> for Aphanite. If you decide to deploy on a local machine, you'll need to use a tunneling service.
+> See [Deployment > Tunneling](/aphanite/deployment#port-forwarding) for details.
 
 ## Choose an Installation Method
 
-Aphanite is designed to be easy to deploy. However, we also provide a Docker image for one-command setup.
+Aphanite is designed to be easy to deploy. However, we also provide a Docker image for one-command
+setup.
 
-- If you're on Windows and don't want to install [Docker Desktop](https://www.docker.com/products/docker-desktop/) or [Podman Desktop](https://podman-desktop.io/), use the [standalone binary](#binary-usage).
-- If you're on Windows and already have Docker Desktop or Podman Desktop, you can try [Docker](#docker).
-- If you're on Linux and want a one-command installation, or need containerization for sandboxing, use [Docker](#docker).
+- If you're on Windows and don't want to install
+  [Docker Desktop](https://www.docker.com/products/docker-desktop/) or
+  [Podman Desktop](https://podman-desktop.io/), use the [standalone binary](#binary-usage).
+- If you're on Windows and already have Docker Desktop or Podman Desktop, you can try
+  [Docker](#docker).
+- If you're on Linux and want a one-command installation, or need containerization for sandboxing,
+  use [Docker](#docker).
 - Otherwise, we generally recommend [running the binary directly](#binary-usage).
-- If you're already familiar with system service management, you probably have your own preferences — skip to the section that fits.
+- If you're already familiar with system service management, you probably have your own preferences
+  — skip to the section that fits.
 
-Note that Aphanite uses Turso (a feature-rich Rust port of SQLite) by default and is designed for straightforward deployment. Using Docker usually **won't be much more convenient**. Unless you plan to use PostgreSQL, in which case you might set up a Docker Compose stack or use Kubernetes to cluster Aphanite — but those are beyond the scope of this wiki.
+Note that Aphanite uses Turso (a feature-rich Rust port of SQLite) by default and is designed for
+straightforward deployment. Using Docker usually **won't be much more convenient**. Unless you plan
+to use PostgreSQL, in which case you might set up a Docker Compose stack or use Kubernetes to
+cluster Aphanite — but those are beyond the scope of this wiki.
 
 ## Standalone Binary {#binary-usage}
 
 We provide pre-compiled binaries for Windows x64 and Linux x64.
 
-If your operating system or CPU architecture isn't listed above, you'll likely need to [compile from source](#compile-from-source).
+If your operating system or CPU architecture isn't listed above, you'll likely need to
+[compile from source](#compile-from-source).
 
 - [Download from GitHub Releases](https://git.feniota.org/feniota/aphanite/releases)
 - Download from Cloudflare R2 (coming soon)
@@ -40,9 +54,13 @@ After downloading, just double-click the `.exe` file (Windows) or `chmod +x` and
 >
 > Windows users can skip to the [next section](#init).
 
-For Linux, we provide two variants. One uses `glibc` with dynamic linking: it requires your system glibc to be **version 2.34 or newer** and have the necessary dynamic libraries available, otherwise it won't start. The other uses musl libc with static linking — it runs on any Linux x64 system as long as the kernel isn't too old.
+For Linux, we provide two variants. One uses `glibc` with dynamic linking: it requires your system
+glibc to be **version 2.34 or newer** and have the necessary dynamic libraries available, otherwise
+it won't start. The other uses musl libc with static linking — it runs on any Linux x64 system as
+long as the kernel isn't too old.
 
-Generally, if your system glibc is recent enough, we recommend the glibc version. Otherwise, use the musl version.
+Generally, if your system glibc is recent enough, we recommend the glibc version. Otherwise, use the
+musl version.
 
 You can check your `glibc` version with:
 
@@ -53,11 +71,13 @@ ldd --version
 /lib/x86_64-linux-gnu/libc.so.6 # Debian derivatives (Debian, Ubuntu)
 ```
 
-If you're using a lightweight distro like Alpine, your system may not use `glibc` at all. Don't worry — the musl version works on all x64 Linux distributions!
+If you're using a lightweight distro like Alpine, your system may not use `glibc` at all. Don't
+worry — the musl version works on all x64 Linux distributions!
 
 ### Initialize Configuration {#init}
 
-After downloading, copy the Aphanite executable to an **empty directory where your current user has read and write permissions**, then run:
+After downloading, copy the Aphanite executable to an **empty directory where your current user has
+read and write permissions**, then run:
 
 ::: code-group
 
@@ -81,7 +101,8 @@ Check out [Running Aphanite](/aphanite/running).
 
 Aphanite is written in Rust and it has a frontend (web) part, so you'll need:
 
-- C/C++ build toolchain (depends on your OS — e.g., on macOS you'll need to [install Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/))
+- C/C++ build toolchain (depends on your OS — e.g., on macOS you'll need to
+  [install Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/))
 - [Rust toolchain](https://rustup.rs)
 - [Node.js](https://nodejs.org/) (v24+)
 - [pnpm](https://pnpm.io/)
@@ -100,17 +121,25 @@ pnpm install
 pnpm build x86_64-unknown-linux-gnu
 ```
 
-Replace the target triple with the one for your platform (e.g., `x86_64-pc-windows-gnu` for Windows). Running `pnpm build` without arguments builds all release targets and additionally packages them into zips under `dist/`.
+Replace the target triple with the one for your platform (e.g., `x86_64-pc-windows-gnu` for
+Windows). Running `pnpm build` without arguments builds all release targets and additionally
+packages them into zips under `dist/`.
 
-Wait a moment. After compilation, the `aphanite` binary will be at `source_dir/target/<triple>/release`.
+Wait a moment. After compilation, the `aphanite` binary will be at
+`source_dir/target/<triple>/release`.
 
 Next, head to [Initialize Configuration](#init).
 
 ## Using Docker {#docker}
 
-Official Docker images are available as [`quay.io/feniota/aphanite`](https://quay.io/repository/feniota/aphanite?tab=tags).
+Official Docker images are available as
+[`quay.io/feniota/aphanite`](https://quay.io/repository/feniota/aphanite?tab=tags).
 
-These images are built `FROM scratch` and contain nothing but a statically linked (musl) Aphanite binary, so they are very small in size and run on any Linux x64 host as long as the kernel isn't too old. This also means the image is "distroless": there is no shell or any other tooling inside, so you cannot `docker exec` into it — manage configuration and data through the mounted host directory instead.
+These images are built `FROM scratch` and contain nothing but a statically linked (musl) Aphanite
+binary, so they are very small in size and run on any Linux x64 host as long as the kernel isn't too
+old. This also means the image is "distroless": there is no shell or any other tooling inside, so
+you cannot `docker exec` into it — manage configuration and data through the mounted host directory
+instead.
 
 You can pull the image with:
 
@@ -120,11 +149,12 @@ podman pull quay.io/feniota/aphanite:latest
 docker pull quay.io/feniota/aphanite:latest
 ```
 
-Each release is tagged with the corresponding version number, e.g., `quay.io/feniota/aphanite:v0.1.0`.
+Each release is tagged with the corresponding version number, e.g.,
+`quay.io/feniota/aphanite:v0.1.0`.
 
-To deploy Aphanite with Docker, (or similar container hosts), you should first create a directory to store the configuration and database.
-Let's assume the directory is `~/.aphanite`.
-Then run the following command to start the container:
+To deploy Aphanite with Docker, (or similar container hosts), you should first create a directory to
+store the configuration and database. Let's assume the directory is `~/.aphanite`. Then run the
+following command to start the container:
 
 ```bash{5}
 mkdir -p ~/.aphanite
@@ -138,9 +168,13 @@ podman run -d \ # or docker
 
 > [!NOTE]
 >
-> The image runs as the non-root user with UID 1000, so the mounted directory must be writable by it. With rootless Podman, run `podman unshare chown -R 1000:1000 ~/.aphanite`; with (rootful) Docker, run `sudo chown -R 1000:1000 ~/.aphanite`.
+> The image runs as the non-root user with UID 1000, so the mounted directory must be writable by
+> it. With rootless Podman, run `podman unshare chown -R 1000:1000 ~/.aphanite`; with (rootful)
+> Docker, run `sudo chown -R 1000:1000 ~/.aphanite`.
 
-If no configuration file exists, the image automatically generates one on first start. So once the container is up, edit `~/.aphanite/config.toml` before exposing the service publicly (see [Configuration](/aphanite/configuration)), then restart the container to apply your changes.
+If no configuration file exists, the image automatically generates one on first start. So once the
+container is up, edit `~/.aphanite/config.toml` before exposing the service publicly (see
+[Configuration](/aphanite/configuration)), then restart the container to apply your changes.
 
 ### Building the Docker Image Yourself
 
@@ -152,4 +186,9 @@ podman build -t aphanite:latest .
 docker build -t aphanite:latest .
 ```
 
-You can always customize the Dockerfile to your liking. The official one compiles Aphanite as a statically linked musl binary with the `bundle-certs` feature enabled, which embeds Mozilla root certificates into the binary — necessary because the `scratch` base image ships no CA store. If you write your own, please note that compiling Aphanite with default parameters will likely result in a glibc dynamically linked binary, which may not run on all types of container bases, especially Alpine or `scratch`.
+You can always customize the Dockerfile to your liking. The official one compiles Aphanite as a
+statically linked musl binary with the `bundle-certs` feature enabled, which embeds Mozilla root
+certificates into the binary — necessary because the `scratch` base image ships no CA store. If you
+write your own, please note that compiling Aphanite with default parameters will likely result in a
+glibc dynamically linked binary, which may not run on all types of container bases, especially
+Alpine or `scratch`.

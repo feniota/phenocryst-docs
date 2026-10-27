@@ -6,17 +6,32 @@ description: "Deploy Aphanite behind a reverse proxy with TLS for production use
 
 # Deployment
 
-In theory, once you put Aphanite in its own folder and grant execution permissions, double-clicking it should run.
+In theory, once you put Aphanite in its own folder and grant execution permissions, double-clicking
+it should run.
 
-However, since Aphanite itself does not implement TLS[^1], and Minecraft requires Yggdrasil servers to implement TLS, you need a reverse proxy[^2] to provide TLS externally.
+However, since Aphanite itself does not implement TLS[^1], and Minecraft requires Yggdrasil servers
+to implement TLS, you need a reverse proxy[^2] to provide TLS externally.
 
-[^1]: TLS, simply put, is what turns HTTP into HTTPS. Here's [an article from Cloudflare](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/) that explains this technology in simple terms.
+[^1]:
+    TLS, simply put, is what turns HTTP into HTTPS. Here's
+    [an article from Cloudflare](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/)
+    that explains this technology in simple terms.
 
-[^2]: Here's [an article from Cloudflare](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/) that explains what a reverse proxy is.
+[^2]:
+    Here's
+    [an article from Cloudflare](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/)
+    that explains what a reverse proxy is.
 
-Additionally, since all players including the server owner need direct access to Aphanite, if it's running on a local machine, you'll need a tunneling service[^3] to make it accessible from the outside.
+Additionally, since all players including the server owner need direct access to Aphanite, if it's
+running on a local machine, you'll need a tunneling service[^3] to make it accessible from the
+outside.
 
-[^3]: A tunneling service (also called "port forwarding" or "NAT traversal") creates a secure tunnel from a public server to your local machine, allowing external users to access services running on your local computer. Here's [an article from Cloudflare](https://www.cloudflare.com/learning/network-layer/what-is-tunneling/) explaining it.
+[^3]:
+    A tunneling service (also called "port forwarding" or "NAT traversal") creates a secure tunnel
+    from a public server to your local machine, allowing external users to access services running
+    on your local computer. Here's
+    [an article from Cloudflare](https://www.cloudflare.com/learning/network-layer/what-is-tunneling/)
+    explaining it.
 
 This article covers how to get Aphanite running properly.
 
@@ -30,7 +45,8 @@ This article covers how to get Aphanite running properly.
 
 **TL;DR: Reverse proxy: YES; Tunneling: as needed.**
 
-Note that most tunneling services already include reverse proxy functionality. For the purposes of this document:
+Note that most tunneling services already include reverse proxy functionality. For the purposes of
+this document:
 
 - **Tunneling service**: Any tool that can forward ports to the cloud.
 - **Reverse proxy**: A tool that only listens on ports locally.
@@ -38,9 +54,12 @@ Note that most tunneling services already include reverse proxy functionality. F
 They play different roles in Aphanite:
 
 - Reverse proxy: Wraps Aphanite's "bare" HTTP traffic with TLS, turning it into HTTPS.
-  - TLS is mandatory because Minecraft won't accept a "bare" HTTP Yggdrasil server. From a security standpoint, bare HTTP means your communication can be easily tampered with.
+  - TLS is mandatory because Minecraft won't accept a "bare" HTTP Yggdrasil server. From a security
+    standpoint, bare HTTP means your communication can be easily tampered with.
 - Tunneling: Makes Aphanite accessible on the public internet.
-  - This is optional. Question: Does the machine running Aphanite have a dedicated public IP, or a way to map local ports to the internet (typically provided by your server host)? If yes, you don't need a tunneling service.
+  - This is optional. Question: Does the machine running Aphanite have a dedicated public IP, or a
+    way to map local ports to the internet (typically provided by your server host)? If yes, you
+    don't need a tunneling service.
 
 So the picture is clear — a reverse proxy is required; tunneling is optional.
 
@@ -50,9 +69,12 @@ Below are two approaches you can choose from.
 
 ### Cloudflare Tunnel (Reverse Proxy + Tunneling, requires a domain) {#cloudflare-tunnel}
 
-[Cloudflare Tunnel](https://developers.cloudflare.com/tunnel/) is a **free** reverse proxy and tunneling service provided by Cloudflare, the well-known CDN and network infrastructure provider.
+[Cloudflare Tunnel](https://developers.cloudflare.com/tunnel/) is a **free** reverse proxy and
+tunneling service provided by Cloudflare, the well-known CDN and network infrastructure provider.
 
-**Prerequisite**: A domain name hosted on Cloudflare. If you don't have one, you can also try Cloudflare Quick Tunnel (see below), though each time you restart, your Aphanite server address will change.
+**Prerequisite**: A domain name hosted on Cloudflare. If you don't have one, you can also try
+Cloudflare Quick Tunnel (see below), though each time you restart, your Aphanite server address will
+change.
 
 #### Steps (with a domain)
 
@@ -63,12 +85,15 @@ Below are two approaches you can choose from.
 5. Follow the on-screen instructions to install and start `cloudflared`.
 6. Click "Add Route".
 7. Select "Published Applications".
-8. Enter the domain you want to deploy to and Aphanite's local URL (relative to the machine running `cloudflared`; typically `http://127.0.0.1:<port>`, where `<port>` is from [Configuration](/aphanite/configuration)).
+8. Enter the domain you want to deploy to and Aphanite's local URL (relative to the machine running
+   `cloudflared`; typically `http://127.0.0.1:<port>`, where `<port>` is from
+   [Configuration](/aphanite/configuration)).
 9. Well done! Your Aphanite should now be accessible at your new domain.
 
 #### Steps (without a domain)
 
-The following uses Cloudflare Quick Tunnels. It assigns a random new domain each time you start, so it's not recommended for permanent use.
+The following uses Cloudflare Quick Tunnels. It assigns a random new domain each time you start, so
+it's not recommended for permanent use.
 
 1. [Download and install `cloudflared`](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/).
 2. Run:
@@ -88,17 +113,22 @@ cloudflared tunnel --url http://localhost:3000
 >
 > This method is not tested.
 
-DigitalPlat offers a free domain service, and that should be enough for Minecraft hosting. Check out details [here](https://github.com/DigitalPlatDev/FreeDomain/blob/main/documents/tutorial/getting-started/index.md).
+DigitalPlat offers a free domain service, and that should be enough for Minecraft hosting. Check out
+details
+[here](https://github.com/DigitalPlatDev/FreeDomain/blob/main/documents/tutorial/getting-started/index.md).
 
 ### Nginx (Reverse Proxy only, requires a public IP / port forwarding, requires a domain)
 
 > [!NOTE]
 >
-> This approach is relatively more difficult to configure. Unless you have special requirements (e.g., you want SSL certificates under your own control), [Cloudflare Tunnel](#cloudflare-tunnel) is recommended.
+> This approach is relatively more difficult to configure. Unless you have special requirements
+> (e.g., you want SSL certificates under your own control), [Cloudflare Tunnel](#cloudflare-tunnel)
+> is recommended.
 
 This section is intended for experienced operators. In short:
 
-1. Obtain an SSL certificate. Use [Certbot](https://certbot.eff.org/) or [acme.sh](https://github.com/acmesh-official/acme.sh).
+1. Obtain an SSL certificate. Use [Certbot](https://certbot.eff.org/) or
+   [acme.sh](https://github.com/acmesh-official/acme.sh).
 2. Configure the reverse proxy. Here's a sample Nginx reverse proxy configuration for reference.
 
 ```nginx {24}
@@ -134,7 +164,8 @@ server {
 
 3. `nginx -t && nginx -s reload`.
 
-Alternatively, server management panels like aaPanel or CyberPanel provide one-click reverse proxy configuration — if you have one installed, refer to their documentation.
+Alternatively, server management panels like aaPanel or CyberPanel provide one-click reverse proxy
+configuration — if you have one installed, refer to their documentation.
 
 ## Persistent Operation
 
@@ -142,15 +173,19 @@ Alternatively, server management panels like aaPanel or CyberPanel provide one-c
 >
 > The following content applies to Linux only.
 
-If you're running Aphanite on a server, you'll likely want it to persist beyond your SSH session. The following guide lets you create a Systemd unit file to manage Aphanite.
+If you're running Aphanite on a server, you'll likely want it to persist beyond your SSH session.
+The following guide lets you create a Systemd unit file to manage Aphanite.
 
-These steps are only relevant if you manage your server purely via SSH. If running on a desktop or via a panel, you probably don't need this.
+These steps are only relevant if you manage your server purely via SSH. If running on a desktop or
+via a panel, you probably don't need this.
 
-The following assumes your `aphanite` binary is at `/opt/aphanite` and named `aphanite`. Adjust paths according to your setup.
+The following assumes your `aphanite` binary is at `/opt/aphanite` and named `aphanite`. Adjust
+paths according to your setup.
 
 ### Creating a User
 
-It's good practice to create a dedicated user for Aphanite to isolate its directory access and prevent accidents.
+It's good practice to create a dedicated user for Aphanite to isolate its directory access and
+prevent accidents.
 
 ```bash
 sudo useradd -U -d /opt/aphanite -s /sbin/nologin aphanite
@@ -191,7 +226,8 @@ Systemd should now be aware of your unit file.
 >
 > The following may not apply to your distribution. If you encounter errors, consider asking an AI.
 
-If your distribution has SELinux enabled with an aggressive policy, you may need to label the Aphanite binary with `bin_t` for Systemd to start it properly.
+If your distribution has SELinux enabled with an aggressive policy, you may need to label the
+Aphanite binary with `bin_t` for Systemd to start it properly.
 
 Check your SELinux status:
 
@@ -228,15 +264,19 @@ journalctl -u aphanite              # View Aphanite logs
 >
 > The following content applies to Linux only.
 
-If you run Aphanite in a container, keeping it running persistently is quite simpler. The following sections describe three approaches.
+If you run Aphanite in a container, keeping it running persistently is quite simpler. The following
+sections describe three approaches.
 
 > [!NOTE]
 >
-> The official image runs as the non-root user with UID 1000. Make sure the host directory you mount (e.g. `/opt/aphanite`) is writable by it — for the examples below, `sudo chown -R 1000:1000 /opt/aphanite` will do.
+> The official image runs as the non-root user with UID 1000. Make sure the host directory you mount
+> (e.g. `/opt/aphanite`) is writable by it — for the examples below,
+> `sudo chown -R 1000:1000 /opt/aphanite` will do.
 
 ### Option 1: The `--detach` Flag
 
-This is the simplest approach. Add the `-d`, or `--detach`, flag when starting the container, and the container runtime will keep it running in the background.
+This is the simplest approach. Add the `-d`, or `--detach`, flag when starting the container, and
+the container runtime will keep it running in the background.
 
 ```bash{2}
 podman run \ # or docker
@@ -247,7 +287,8 @@ podman run \ # or docker
   quay.io/feniota/aphanite:latest
 ```
 
-It may be better to add the `--restart unless-stopped` flag. This makes the container runtime automatically restart the container if it fails unexpectedly, helping keep the service available.
+It may be better to add the `--restart unless-stopped` flag. This makes the container runtime
+automatically restart the container if it fails unexpectedly, helping keep the service available.
 
 ```bash{2,3}
 podman run \ # or docker
@@ -261,11 +302,13 @@ podman run \ # or docker
 
 ### Option 2: Podman Quadlet
 
-Podman Quadlet is a systemd unit generator from Podman. It lets you manage Podman containers using the same INI syntax as Systemd unit files.
+Podman Quadlet is a systemd unit generator from Podman. It lets you manage Podman containers using
+the same INI syntax as Systemd unit files.
 
 The advantages of this approach are:
 
-- Deep integration with the underlying system service manager (Systemd), providing greater reliability than starting containers manually.
+- Deep integration with the underlying system service manager (Systemd), providing greater
+  reliability than starting containers manually.
 - Declarative configuration files that are easy to manage and migrate.
 - Systemd's log management features can be used to view container logs.
 - No additional configuration is required for starting the container on boot.
@@ -276,7 +319,8 @@ It also has some clear disadvantages:
 - It is not suitable if you prefer to manage your server through a panel.
 - You need to learn how to configure Systemd.
 
-Here is an example Quadlet configuration file. It assumes that you store Aphanite's configuration file and database under `/opt/aphanite`.
+Here is an example Quadlet configuration file. It assumes that you store Aphanite's configuration
+file and database under `/opt/aphanite`.
 
 ```ini
 [Unit]
@@ -298,7 +342,8 @@ Save it as `/etc/containers/systemd/aphanite.container`, then run:
 sudo systemctl daemon-reload
 ```
 
-Podman Quadlet will automatically generate `aphanite.service` from this configuration file, and you can manage it like a Systemd service. For example:
+Podman Quadlet will automatically generate `aphanite.service` from this configuration file, and you
+can manage it like a Systemd service. For example:
 
 ```bash
 sudo systemctl start aphanite # Start Aphanite
@@ -308,12 +353,17 @@ sudo journalctl -u aphanite # View Aphanite's logs
 sudo journalctl -fu aphanite # View Aphanite's live logs
 ```
 
-After starting the Aphanite service, Systemd automatically invokes Podman to download and start the container. If you need to modify Aphanite's configuration file later, you may need to restart the service afterwards.
+After starting the Aphanite service, Systemd automatically invokes Podman to download and start the
+container. If you need to modify Aphanite's configuration file later, you may need to restart the
+service afterwards.
 
 > [!NOTE]
 >
-> Because the unit files generated by Podman Quadlet are treated as transient by systemd, you cannot configure them to start on boot directly with `enable` or `disable`. However, because the example above includes an `[Install]` section, Podman Quadlet automatically adds the service to `multi-user.target.wants`.
-> In other words, Aphanite is already configured to start on boot after you run `systemctl daemon-reload`.
+> Because the unit files generated by Podman Quadlet are treated as transient by systemd, you cannot
+> configure them to start on boot directly with `enable` or `disable`. However, because the example
+> above includes an `[Install]` section, Podman Quadlet automatically adds the service to
+> `multi-user.target.wants`. In other words, Aphanite is already configured to start on boot after
+> you run `systemctl daemon-reload`.
 
 ### Option 3: Writing a Systemd Unit File Manually
 
@@ -342,6 +392,9 @@ Save it as `/etc/systemd/system/aphanite.service`, then run:
 sudo systemctl daemon-reload
 ```
 
-You can then manage Aphanite like a Systemd service. See [the commands above](#systemd-commands) for details.
+You can then manage Aphanite like a Systemd service. See [the commands above](#systemd-commands) for
+details.
 
-This approach is less maintainable than Podman Quadlet. Therefore, if you can install Podman (why not?), it is not recommended unless you can only use Docker, migrating to Podman would be difficult, and you specifically need Systemd's features.
+This approach is less maintainable than Podman Quadlet. Therefore, if you can install Podman (why
+not?), it is not recommended unless you can only use Docker, migrating to Podman would be difficult,
+and you specifically need Systemd's features.

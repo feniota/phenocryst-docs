@@ -15,7 +15,9 @@ This is the first official release of Aphanite.
 
 ### Migrating from Older Versions
 
-Migration from older versions (development versions from before [PR #17](https://github.com/feniota/aphanite/pull/17) was merged) primarily involves migrating the default database backend from SQLite to Turso. Follow these steps:
+Migration from older versions (development versions from before
+[PR #17](https://github.com/feniota/aphanite/pull/17) was merged) primarily involves migrating the
+default database backend from SQLite to Turso. Follow these steps:
 
 1. Connect to the database using `sqlite3` or another tool:
 

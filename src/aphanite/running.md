@@ -35,9 +35,11 @@ Usage:
 ./aphanite init --config <path-to-config-file>
 ```
 
-Running this command generates a fresh configuration file at the specified path (can be omitted). You should have already done this during [Installation](/aphanite/installation#init).
+Running this command generates a fresh configuration file at the specified path (can be omitted).
+You should have already done this during [Installation](/aphanite/installation#init).
 
-The next step is [Configuration](/aphanite/configuration). You can edit the generated config file as needed.
+The next step is [Configuration](/aphanite/configuration). You can edit the generated config file as
+needed.
 
 ## Create an Admin User
 
@@ -49,4 +51,5 @@ Usage:
 
 This command creates a new admin user in Aphanite.
 
-Generally, you should only use this if you've just installed Aphanite and have no users yet. Otherwise, in the admin panel you'll find more convenient ways to create users.
+Generally, you should only use this if you've just installed Aphanite and have no users yet.
+Otherwise, in the admin panel you'll find more convenient ways to create users.

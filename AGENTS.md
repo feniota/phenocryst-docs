@@ -12,7 +12,8 @@ Dependencies: Node.js + pnpm. CI (Cloudflare Pages) also uses pnpm.
 
 ## Architecture: VitePress docs site
 
-Bilingual documentation site for two projects (Aphanite — a game server; Phanerite — a launcher). Uses VitePress default theme extended with custom Vue components.
+Bilingual documentation site for two projects (Aphanite — a game server; Phanerite — a launcher).
+Uses VitePress default theme extended with custom Vue components.
 
 ### Project structure
 
@@ -40,20 +41,26 @@ zh/                     — Chinese translations (mirror of root)
 
 ### Locales & navigation
 
-Config in `.vitepress/config.mts` defines two locales: `root` (en) and `zh` (简体中文). Each has independent `nav` and `sidebar`. Sidebar organized by prefix paths (`/`, `/aphanite/`, `/aphanite/development/` and `zh/` counterparts).
+Config in `.vitepress/config.mts` defines two locales: `root` (en) and `zh` (简体中文). Each has
+independent `nav` and `sidebar`. Sidebar organized by prefix paths (`/`, `/aphanite/`,
+`/aphanite/development/` and `zh/` counterparts).
 
 ### Search: Cloudflare AI Search
 
-- `AiSearchButton.vue` dynamically imports `@cloudflare/ai-search-snippet` and appends `<search-modal-snippet>` to `<body>` at runtime (avoids SSR errors and VP stacking contexts).
+- `AiSearchButton.vue` dynamically imports `@cloudflare/ai-search-snippet` and appends
+  `<search-modal-snippet>` to `<body>` at runtime (avoids SSR errors and VP stacking contexts).
 - Button click calls `document.querySelector("search-modal-snippet")?.open()`.
 - Themed via `--search-snippet-*` CSS vars in `styles.css`.
-- `vue.template.compilerOptions.isCustomElement` in config.mts marks `search-*` as native custom elements.
+- `vue.template.compilerOptions.isCustomElement` in config.mts marks `search-*` as native custom
+  elements.
 
 ### Plugins
 
-- **`vitepress-plugin-llms`**: Generates `llms.txt` / `llms-full.txt`. Configured with `excludeIndexPage: false`, `injectLLMHint: false`.
+- **`vitepress-plugin-llms`**: Generates `llms.txt` / `llms-full.txt`. Configured with
+  `excludeIndexPage: false`, `injectLLMHint: false`.
 - **`markdown-it-footnote`**: Markdown footnote syntax support.
-- **`copyOrDownloadAsMarkdownButtons`**: markdown-it plugin injecting copy/download buttons after `<h1>`. Vue component registered in `theme/index.ts`.
+- **`copyOrDownloadAsMarkdownButtons`**: markdown-it plugin injecting copy/download buttons after
+  `<h1>`. Vue component registered in `theme/index.ts`.
 
 ### Cloudflare integration
 
@@ -64,9 +71,11 @@ Config in `.vitepress/config.mts` defines two locales: `root` (en) and `zh` (简
 
 ## Key conventions
 
-- **Frontmatter**: Every `.md` file should have a `title` and optionally `description` (used by llmstxt plugin for link summaries).
+- **Frontmatter**: Every `.md` file should have a `title` and optionally `description` (used by
+  llmstxt plugin for link summaries).
 - **Footnotes**: Use `[^1]` / `[^1]:` syntax.
-- **Internal links**: Absolute paths without extensions (e.g. `/aphanite/installation`). No relative paths.
+- **Internal links**: Absolute paths without extensions (e.g. `/aphanite/installation`). No relative
+  paths.
 - **i18n**: Chinese locale is `zh`; paths start with `/zh/`. Root is English.
 - **Sitemap**: Auto-generated at build. Hostname in `config.mts`.
 - **Formatting**: `oxfmt` — config in `.oxfmtrc.json`.

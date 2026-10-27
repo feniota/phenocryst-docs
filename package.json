@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "scripts": {
     "dev": "vitepress dev",
     "build": "git fetch --unshallow && vitepress build",
@@ -11,7 +12,10 @@
     "markdown-it-footnote": "^4.0.0"
   },
   "devDependencies": {
+    "@shikijs/langs": "^4.5.0",
+    "@shikijs/themes": "^4.5.0",
     "oxfmt": "^0.60.0",
+    "shiki": "^4.5.0",
     "vitepress": "^1.6.4",
     "vitepress-plugin-llms": "^1.13.3"
   }

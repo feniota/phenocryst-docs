@@ -1,3 +1,12 @@
 {
-  "proseWrap": "preserve"
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "proseWrap": "always",
+  "overrides": [
+    {
+      "files": ["./src/zh/**/*.md"],
+      "options": {
+        "proseWrap": "preserve"
+      }
+    }
+  ]
 }
