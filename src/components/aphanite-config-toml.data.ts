@@ -1,7 +1,7 @@
 import { defineLoader } from "vitepress";
 
 const FORGEJO_BASE_URL = "https://git.feniota.org/"; // must have a following /
-const REPOSITORY = "feniota/aphanite"; // must not have a leading and following /
+const REPOSITORY = "feniota/aphanite"; // must not have leading and following /
 const FILE_PATH = "src/assets/config.example.toml"; // must not have a leading /
 const GIT_REF = "main";
 
@@ -24,7 +24,7 @@ export interface AphaniteConfigToml {
   content: string;
 
   /**
-   * SHA-1 hash of the Git Commit in which the TOML file is last updated
+   * SHA-1 hash of the Git Commit in which the TOML file was last updated
    */
   commit_sha: string;
 
@@ -32,6 +32,11 @@ export interface AphaniteConfigToml {
    * URL of the file in the specific Git commit
    */
   url: string;
+
+  /**
+   * ISO 8601 timestamp of when the file was fetched
+   */
+  fetched_at: string;
 }
 
 declare const data: AphaniteConfigToml;
@@ -51,6 +56,7 @@ export default defineLoader({
         commit_sha: resp.last_commit_sha,
         // the lack of `encodeURICompont` is intentional, do not add that
         url: `${FORGEJO_BASE_URL}${REPOSITORY}/src/commit/${resp.last_commit_sha}/${FILE_PATH}`,
+        fetched_at: new Date().toISOString(),
       };
     } else {
       throw new Error("Forgejo API returned unexpected result");
