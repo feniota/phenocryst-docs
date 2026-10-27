@@ -64,6 +64,11 @@ independent `nav` and `sidebar`. Sidebars are keyed by prefix paths (`/`, `/apha
 `/aphanite/development/`, `/granodiorite/` and the `/zh/` counterparts). A new page needs a sidebar
 entry in both locales — note the zh development sidebar currently omits the Phenocryst page.
 
+VitePress default-theme UI strings are not auto-translated by `lang`; zh `themeConfig` overrides
+them explicitly (`outlineTitle`, `lastUpdatedText`, `docFooter`, `notFound`, etc.). The llms
+copy/download buttons read `themeConfig.llms` (requires `vitepress-plugin-llms` ≥ 1.14.0), while AI
+Search modal strings live in `ZH_TRANSLATIONS` in `AiSearchButton.vue`.
+
 ### Dynamic config reference
 
 `src/aphanite/configuration.md` imports the loader in `src/components/aphanite-config-toml.data.ts`,
